@@ -1,0 +1,49 @@
+.alpha-logo-with-shadow .alpha-logo{
+    opacity: 1;
+    width: 60vh;
+    height: 60vh;
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    -webkit-transform: translate(-50%, -69%);
+    -moz-transform: translate(-50%, -69%);
+    -ms-transform: translate(-50%, -69%);
+    -o-transform: translate(-50%, -69%);
+    transform: translate(-50%, -69%);
+    -webkit-transform-origin: 50% 58%;
+    -moz-transform-origin: 50% 58%;
+    -ms-transform-origin: 50% 58%;
+    -o-transform-origin: 50% 58%;
+    transform-origin: 50% 58%;
+}
+
+
+.alpha-logo-with-shadow .alpha-shadow {
+    opacity: 1;
+    position: absolute;
+    top: 80%;
+    left: 55%;
+    height: 6vh;
+    width: auto;
+    -webkit-transform: translate(-50%, -69%);
+    -moz-transform: translate(-50%, -69%);
+    -ms-transform: translate(-50%, -69%);
+    -o-transform: translate(-50%, -69%);
+    transform: translate(-50%, -69%);
+    z-index: -1;
+
+}
+
+
+@media all and (orientation: portrait) {
+    .alpha-logo-with-shadow .alpha-logo {
+        width: 50vw;
+        height: auto;
+    }
+
+    .alpha-logo-with-shadow .alpha-shadow {
+        width: 45vw;
+        height: auto;
+        top: 68%;
+    }
+}
