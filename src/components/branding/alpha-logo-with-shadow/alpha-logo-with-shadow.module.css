@@ -1,4 +1,4 @@
-.alpha-logo-with-shadow .alpha-logo{
+.alphaLogo{
     opacity: 1;
     width: 60vh;
     height: 60vh;
@@ -17,8 +17,7 @@
     transform-origin: 50% 58%;
 }
 
-
-.alpha-logo-with-shadow .alpha-shadow {
+.alphaShadow {
     opacity: 1;
     position: absolute;
     top: 80%;
@@ -35,13 +34,13 @@
 }
 
 
-@media all and (orientation: portrait) {
-    .alpha-logo-with-shadow .alpha-logo {
+@media (max-width: 768px) {
+    .alphaLogo {
         width: 50vw;
         height: auto;
     }
 
-    .alpha-logo-with-shadow .alpha-shadow {
+    .alphaShadow {
         width: 45vw;
         height: auto;
         top: 68%;

@@ -1,10 +1,7 @@
 import React from "react";
 import { TweenMax, TimelineMax, Power0, Power2 } from "gsap";
 
-import AlphaLogo from "../../assets/svgs/alpha.svg";
-import AlphaLogoShadow from "../../assets/svgs/alpha-shadow.svg";
-
-import "./alpha-logo-with-shadow.css";
+import styles from "./alpha-logo-with-shadow.module.css";
 
 export class AlphaLogoWithShadow extends React.Component {
   private alphaLogoRef: HTMLImageElement | null;
@@ -32,15 +29,15 @@ export class AlphaLogoWithShadow extends React.Component {
     return (
       <div className="alpha-logo-with-shadow">
         <img
-          className="alpha-logo"
+          className={styles.alphaLogo}
           alt="alpha logo"
-          src={AlphaLogo}
+          src={"/assets/branding/alpha.svg"}
           ref={(img) => (this.alphaLogoRef = img)}
         />
         <img
-          className="alpha-shadow"
+          className={styles.alphaShadow}
           alt="alpha logo shadwo"
-          src={AlphaLogoShadow}
+          src={"/assets/branding/alpha-shadow.svg"}
           ref={(img) => (this.alphaShadowRef = img)}
         />
       </div>
@@ -79,7 +76,7 @@ export class AlphaLogoWithShadow extends React.Component {
       .fromTo(
         this.alphaShadowRef as {},
         3.33,
-        { xPercent:-50, scale: 1, opacity: 0.4 },
+        { xPercent: -50, scale: 1, opacity: 0.4 },
         {
           scale: 0.6,
           opacity: 1,
