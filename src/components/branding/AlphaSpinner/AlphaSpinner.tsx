@@ -1,5 +1,4 @@
 import React from "react";
-import { TimelineMax, Power4 } from "gsap";
 import { motion } from "framer-motion";
 
 import styles from "./AlphaSpinner.module.css";

@@ -1,0 +1,46 @@
+.alphaLogo {
+  opacity: 1;
+  width: 60vh;
+  height: 60vh;
+  /* position: absolute;
+  top: 50%;
+  left: 55%;
+  -webkit-transform: translate(-50%, -69%);
+  -moz-transform: translate(-50%, -69%);
+  -ms-transform: translate(-50%, -69%);
+  -o-transform: translate(-50%, -69%);
+  transform: translate(-50%, -69%);
+  -webkit-transform-origin: 50% 58%;
+  -moz-transform-origin: 50% 58%;
+  -ms-transform-origin: 50% 58%;
+  -o-transform-origin: 50% 58%;
+  transform-origin: 50% 58%; */
+}
+
+.alphaShadow {
+  opacity: 1;
+  height: 6vh;
+  width: auto;
+  /* position: absolute;
+  top: 80%;
+  left: 55%;
+  -webkit-transform: translate(-50%, -69%);
+  -moz-transform: translate(-50%, -69%);
+  -ms-transform: translate(-50%, -69%);
+  -o-transform: translate(-50%, -69%);
+  transform: translate(-50%, -69%); */
+  z-index: -1;
+}
+
+@media (max-width: 768px) {
+  .alphaLogo {
+    width: 50vw;
+    height: auto;
+  }
+
+  .alphaShadow {
+    width: 45vw;
+    height: auto;
+    /* top: 68%; */
+  }
+}

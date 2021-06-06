@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import React from "react";
+import AlphaLogoWithShadow from "../src/components/branding/AlphaLogoWithShadow/AlphaLogoWithShadow";
 import AlphaSpinner from "../src/components/branding/AlphaSpinner/AlphaSpinner";
 import LoadingText from "../src/components/LoadingText/LoadingText";
 import styles from "../styles/Home.module.css";
@@ -18,9 +19,14 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+        <div>
+          <AlphaSpinner />
+          <LoadingText />
+        </div>
 
-        <AlphaSpinner />
-        <LoadingText />
+        <div>
+          <AlphaLogoWithShadow />
+        </div>
       </main>
 
       <footer className={styles.footer}>

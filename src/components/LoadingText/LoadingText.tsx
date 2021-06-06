@@ -1,7 +1,5 @@
 import React from "react";
 
-import { TweenMax, Power1 } from "gsap";
-
 import styles from "./LoadingText.module.css";
 import { motion } from "framer-motion";
 
