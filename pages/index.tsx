@@ -19,10 +19,8 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
-        <div>
           <AlphaSpinner />
           <LoadingText />
-        </div>
 
         <div>
           <AlphaLogoWithShadow />

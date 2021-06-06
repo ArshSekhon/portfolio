@@ -9,6 +9,7 @@
 .loadingTextWrapper {
   position: relative;
   overflow: hidden;
+  display: block;
 
 }
 
