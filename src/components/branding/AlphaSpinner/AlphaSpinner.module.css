@@ -1,0 +1,11 @@
+.alphaSpinner {
+    width: 40vh;
+    height: 40vh;
+}
+
+@media all and (orientation: portrait) {
+    .alphaSpinner {
+        width: 30vw;
+        height: 30vw;
+    }
+}
