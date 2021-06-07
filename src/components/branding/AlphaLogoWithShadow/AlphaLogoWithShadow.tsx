@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 
 import styles from "./AlphaLogoWithShadow.module.css";
 
-export default () => {
+const AlphaLogoWithShadow = () => {
   return (
-    <div className="alpha-logo-with-shadow">
+    <div className={styles.alphaLogoWithShadowContainer}>
       <motion.div
         className={styles.alphaLogo}
-        animate={{ rotate: [60, 420], y: ["-10%", "-30%"] }}
+        initial={{originX:0.5, originY:0.578}}
+        animate={{ rotate: [60, 420], y: ["-10%", "-20%"] }}
         transition={{
           rotate: {
             repeat: Infinity,
@@ -41,10 +42,12 @@ export default () => {
         }}
       >
         <img
-          alt="alpha logo shadwo"
+          alt="alpha logo shadwow"
           src={"/assets/branding/alpha-shadow.svg"}
         />
       </motion.div>
     </div>
   );
 };
+
+export default AlphaLogoWithShadow;

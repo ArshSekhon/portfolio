@@ -14,17 +14,17 @@
 }
 
 .loadingTextStrikeThrough {
-  position: relative;
-  top: -45%;
+  position: absolute;
+  top: 51%;
   left: -100%;
-  height: 0.1em;
+  height: 0.17em;
   width: 100%;
   background: black;
 }
 
 @media all and (orientation: portrait) {
   .loadingTextWrapper {
-    font-size: 5vw;
+    font-size: 2vw;
     position: relative;
   }
 }

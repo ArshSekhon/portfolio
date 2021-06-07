@@ -1,0 +1,21 @@
+.nameBanner {
+  height: 60vh;
+  width: auto;
+}
+
+.nameBannerContainer {
+  position: absolute;
+  left: 7%;
+  top: 17.5%;
+}
+
+@media all and (orientation: portrait) {
+  .nameBanner {
+    width: 15vw;
+    height: auto;
+  }
+
+  .nameBannerContainer {
+    top: 33%;
+  }
+}

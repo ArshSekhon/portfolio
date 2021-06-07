@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import styles from "./AlphaSpinner.module.css";
 
-export default () => {
+const AlphaSpinner = () => {
   return (
     <>
       <motion.div
@@ -26,3 +26,4 @@ export default () => {
     </>
   );
 };
+export default AlphaSpinner;

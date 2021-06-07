@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./LoadingText.module.css";
 import { motion } from "framer-motion";
 
-export default () => {
+const LoadingText = () => {
   return (
     <div className={styles.loadingTextWrapper}>
       <div className={styles.loadingText}>&nbsp;LOADING</div>
@@ -20,3 +20,5 @@ export default () => {
     </div>
   );
 };
+
+export default LoadingText;

@@ -1,3 +1,7 @@
+.alphaLogoWithShadowContainer {
+  position: relative;
+}
+
 .alphaLogo {
   opacity: 1;
   width: 60vh;
@@ -21,6 +25,7 @@
   opacity: 1;
   height: 6vh;
   width: auto;
+  margin-top: 10%;
   /* position: absolute;
   top: 80%;
   left: 55%;
@@ -32,15 +37,23 @@
   z-index: -1;
 }
 
-@media (max-width: 768px) {
+.alphaLogoWithShadowContainer {
+  margin-left: 10%;
+}
+
+@media all and (orientation: portrait) {
   .alphaLogo {
     width: 50vw;
     height: auto;
+    z-index: 1000;
   }
 
   .alphaShadow {
     width: 45vw;
     height: auto;
-    top: 68%;
+    margin-top: 25%;
+    margin-left: auto;
+    margin-right: auto;
   }
+
 }
