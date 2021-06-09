@@ -1,0 +1,22 @@
+.desktopNavContainer {
+  display: block;
+}
+.mobileNavContainer {
+  display: none;
+}
+
+@media all and (max-width: 768px) {
+  .desktopNavContainer {
+    display: none;
+  }
+  .mobileNavContainer {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    width: 100%;
+    flex-direction: column;
+  }
+}

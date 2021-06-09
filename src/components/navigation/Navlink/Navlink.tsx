@@ -8,8 +8,9 @@ export default function Navlink({
   href,
   enabled,
   clickedCharSpacing = "50px",
-  normalCharSpacing = "5px",
+  normalCharSpacing = "10px",//"0.27em",
   fontSize = undefined,
+  ...props
 }) {
   const router = useRouter();
   const strikeoutAnimationControl = useAnimation();
@@ -46,6 +47,7 @@ export default function Navlink({
 
   return (
     <div
+      {...props}
       className={styles.horizontalStrikeoutLinkWrapper}
       onClick={onClick}
       onMouseEnter={enabled ? animateClearStrikeout : () => {}}
@@ -57,7 +59,7 @@ export default function Navlink({
         onClick={(e) => {
           e.preventDefault();
         }}
-        style={fontSize ? { fontSize } : {}}
+        style={fontSize ? { fontSize: fontSize } : {}}
       >
         <span className={styles.horizontalStrikeoutLinkTextCharacter}>
           {"\u00A0"}
