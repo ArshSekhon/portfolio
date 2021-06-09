@@ -1,0 +1,39 @@
+.horizontalStrikeoutLinkWrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  font-size: 2rem;
+  overflow: hidden;
+  white-space: nowrap;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+}
+
+.horizontalStrikeoutLink {
+}
+
+.horizontalStrikeoutLinkTextCharacter {
+  display: inline-block;
+}
+
+.horizontalStrikeout {
+  position: absolute;
+  top: 56%;
+  -webkit-transform: translate(0%, -50%);
+  -moz-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  -o-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  left: 0;
+  height: 0.05em;
+  width: 100%;
+  background: black;
+}

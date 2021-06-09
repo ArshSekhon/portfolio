@@ -16,6 +16,7 @@
   }
 
   .nameBannerContainer {
-    top: 33%;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
