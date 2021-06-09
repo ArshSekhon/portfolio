@@ -87,13 +87,15 @@ const MobileNav = () => {
 const HomeNavigation = () => {
   return (
     <div>
-      <header> 
+      <header>
+        <nav>
           <div className={styles.desktopNavContainer}>
             <DesktopNav />
           </div>
           <div className={styles.mobileNavContainer}>
             <MobileNav />
-          </div> 
+          </div>
+        </nav>
       </header>
     </div>
   );
