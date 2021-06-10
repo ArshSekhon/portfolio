@@ -48,9 +48,7 @@ export default function AboutPage() {
       >
         <Container maxW="container.lg" marginTop="10vh">
           <Stack spacing={3} alignItems="flex-start">
-            <div id="hello-about">
-              <div className={styles.helloAbout}>Hello,</div>
-            </div>
+            <div className={styles.helloAbout}>Hello,</div>
             <div>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
               bibendum ligula vitae leo bibendum porttitor. Nullam suscipit quam
