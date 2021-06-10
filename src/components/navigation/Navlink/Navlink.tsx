@@ -7,14 +7,19 @@ export default function Navlink({
   text,
   href,
   enabled,
-  clickedCharSpacing = "50px",
-  normalCharSpacing = "10px",//"0.27em",
+  expandedCharSpacing = "30px",
+  normalCharSpacing = "10px", //"0.27em",
+  onClick: customOnClick = undefined,
   fontSize = undefined,
+  navigationDelay = 500,
+  isExpanded = false,
   ...props
 }) {
   const router = useRouter();
   const strikeoutAnimationControl = useAnimation();
   const [isClicked, setIsClicked] = React.useState(false);
+
+  if (isExpanded) normalCharSpacing = expandedCharSpacing;
 
   const animateClearStrikeout = () => {
     if (!isClicked)
@@ -33,22 +38,30 @@ export default function Navlink({
   };
 
   const variants = {
-    clicked: { margin: `0 ${clickedCharSpacing}` },
-    normal: { margin: `0 ${normalCharSpacing}` },
+    expanded: { margin: `0 ${expandedCharSpacing}` },
+    normal: {
+      margin: `0 ${normalCharSpacing}`,
+    },
   };
 
   const onClick = () => {
-    setIsClicked((v) => !v);
-    setTimeout(() => {
-      router.push(href);
-      console.log("push");
-    }, 700);
+    if (enabled) {
+      setIsClicked((v) => !v);
+      if (customOnClick) customOnClick();
+
+      setTimeout(() => {
+        router.push(href);
+      }, navigationDelay);
+    }
   };
 
   return (
     <div
       {...props}
-      className={styles.horizontalStrikeoutLinkWrapper}
+      className={
+        styles.horizontalStrikeoutLinkWrapper +
+        (enabled ? "" : ` ${styles.disabled}`)
+      }
       onClick={onClick}
       onMouseEnter={enabled ? animateClearStrikeout : () => {}}
       onMouseLeave={enabled ? animateStrikeOut : () => {}}
@@ -68,7 +81,7 @@ export default function Navlink({
           <motion.span
             key={idx}
             className={styles.horizontalStrikeoutLinkTextCharacter}
-            animate={isClicked ? "clicked" : "normal"}
+            animate={isClicked ? "expanded" : "normal"}
             variants={variants}
             transition={{ duration: 0.5 }}
             style={{ margin: `0 ${normalCharSpacing}` }}

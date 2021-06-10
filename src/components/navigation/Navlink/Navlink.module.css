@@ -4,7 +4,7 @@
   cursor: pointer;
   font-family: "Open Sans", sans-serif;
   font-weight: 300;
-  font-size: 2.5rem;
+  font-size: 48px;
   overflow: hidden;
   white-space: nowrap;
 
@@ -14,6 +14,18 @@
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+}
+
+.horizontalStrikeoutLinkWrapper.disabled,
+.horizontalStrikeoutLinkWrapper.disabled *{
+  cursor: text;
+  -webkit-touch-callout: initial; /* iOS Safari */
+  -webkit-user-select: initial; /* Safari */
+  -khtml-user-select: initial; /* Konqueror HTML */
+  -moz-user-select: initial; /* Firefox */
+  -ms-user-select: initial; /* Internet Explorer/Edge */
+  user-select: initial; /* Non-prefixed version, currently
                                 supported by Chrome and Opera */
 }
 
@@ -33,7 +45,7 @@
   -o-transform: translate(0%, -50%);
   transform: translate(0%, -50%);
   left: 0;
-  height: 0.05em;
+  height: 3px;
   width: 100%;
   background: black;
 }

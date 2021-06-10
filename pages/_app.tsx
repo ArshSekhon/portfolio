@@ -19,6 +19,11 @@ function App({ Component, pageProps }: AppProps) {
               href="https://fonts.googleapis.com/css?family=Roboto"
               rel="stylesheet"
             />
+            <link
+              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet"
+            />
+
             <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
           </Head>
           <MainLayout>

@@ -1,0 +1,23 @@
+.sayHello {
+  font-size: 10vw;
+  color: black;
+  font-weight: 700;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.socialIcon img {
+  height: 5rem;
+  width: 5rem;
+  transition: transform .2s ease-in-out;
+}
+
+.socialIcon img:hover{
+    transform: scale(1.3);
+}
+
+@media all and (max-width: 768px) {
+  .sayHello {
+    font-size: 13vw;
+  }
+}

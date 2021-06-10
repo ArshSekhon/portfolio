@@ -32,7 +32,7 @@ export default function HomePage() {
   };
 
   React.useEffect(() => {
-    setLoadingTimeOut(5000);
+    setLoadingTimeOut(3000);
   }, []);
 
   return (
