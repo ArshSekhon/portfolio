@@ -1,0 +1,26 @@
+.label,
+.label * {
+  font-size: 5rem !important;
+}
+
+.input {
+  font-size: 2rem !important;
+  padding: 2% 2.5%;
+}
+
+.textArea {
+  font-size: 2.5rem !important;
+}
+
+@media all and (orientation: portrait) {
+  .label,
+  .label * {
+    font-size: 2.5rem !important;
+    line-height: 12vw;
+  }
+
+  .input {
+    height: 10vh;
+    font-size: 1.5rem !important;
+  }
+}

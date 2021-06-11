@@ -2,13 +2,14 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useAnimation, motion } from "framer-motion";
 import styles from "./Navlink.module.css";
+import { useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
 
 export default function Navlink({
   text,
   href,
-  enabled,
-  expandedCharSpacing = "30px",
-  normalCharSpacing = "10px", //"0.27em",
+  enabled = true,
+  expandedCharSpacing = undefined,
+  normalCharSpacing = undefined,
   onClick: customOnClick = undefined,
   fontSize = undefined,
   navigationDelay = 500,
@@ -18,6 +19,20 @@ export default function Navlink({
   const router = useRouter();
   const strikeoutAnimationControl = useAnimation();
   const [isClicked, setIsClicked] = React.useState(false);
+  const [isScreenLargerThan768] = useMediaQuery("(min-width: 768px)");
+
+  //set default values
+  if (!normalCharSpacing) {
+    normalCharSpacing = isScreenLargerThan768 ? "10px" : "5px";
+  }
+
+  if (!expandedCharSpacing) {
+    expandedCharSpacing = isScreenLargerThan768 ? "30px" : "15px";
+  }
+
+  if (!fontSize) {
+    fontSize = useBreakpointValue({ base: "24px", md: "48px", sm: "36px" });
+  }
 
   if (isExpanded) normalCharSpacing = expandedCharSpacing;
 

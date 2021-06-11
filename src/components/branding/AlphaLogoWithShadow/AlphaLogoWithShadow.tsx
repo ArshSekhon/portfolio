@@ -20,7 +20,8 @@ const AlphaLogoWithShadow = () => {
             ease: "linear",
           },
           y: {
-            yoyo: Infinity,
+            repeat: Infinity,
+            repeatType: 'reverse',
             duration: 3,
             delay: 0,
             repeatDelay: 0,
@@ -34,7 +35,8 @@ const AlphaLogoWithShadow = () => {
         className={styles.alphaShadow}
         animate={{ scale: [0.6, 1], opacity: [1, 0.4] }}
         transition={{
-          yoyo: Infinity,
+          repeat: Infinity,
+          repeatType: 'reverse',
           duration: 3,
           ease: "easeInOut",
           delay: 0,

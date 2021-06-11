@@ -65,7 +65,8 @@ const DesktopNav = ({ onNavigate }) => {
         animate={contactContainerAnimationControl}
         style={{
           position: "fixed",
-          left: "60vw",
+          left: "75vw",
+          x:"-50%",
           bottom: "6%",
         }}
       >
@@ -86,7 +87,8 @@ const DesktopNav = ({ onNavigate }) => {
       <motion.div
         style={{
           position: "fixed",
-          left: "25%",
+          left: "30vw",
+          x:"-50%",
           bottom: "6%",
         }}
         animate={aboutContainerAnimationControl}
@@ -138,79 +140,134 @@ const DesktopNav = ({ onNavigate }) => {
   );
 };
 
-const MobileNav = () => {
+const MobileNav = ({ onNavigate }) => {
+  const contactContainerAnimationControl = useAnimation();
+  const aboutContainerAnimationControl = useAnimation();
+  const workContainerAnimationControl = useAnimation();
+
+  const onContactClick = () => {
+    if (onNavigate) onNavigate();
+    contactContainerAnimationControl.start({
+      position: "fixed",
+      x: "-50%",
+      left: "50vw",
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    aboutContainerAnimationControl.start({
+      position: "fixed",
+      y:"100%",
+      opacity: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    workContainerAnimationControl.start({
+      position: "fixed",
+      right: "-5vw",
+      opacity: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+  };
+
+  const onAboutClick = () => {
+    if (onNavigate) onNavigate();
+    aboutContainerAnimationControl.start({
+      position: "fixed",
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    contactContainerAnimationControl.start({
+      position: "fixed",
+      opacity: 0,
+      y: "-100%",
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    workContainerAnimationControl.start({
+      position: "fixed",
+      right: "-5vw",
+      opacity: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+  };
+
   return (
     <div>
-      <div
+      <motion.div
+        animate={contactContainerAnimationControl}
         style={{
           position: "fixed",
-          width: "100vw",
-          left: 0,
-          textAlign: "center",
+          left: "50vw",
           top: "6%",
+          x:"-50%"
         }}
       >
         <motion.div
-          initial={{ opacity: 0, top: "0%" }}
-          animate={{ opacity: 1, top: "6%" }}
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           layoutId="contact-HomeNavLink"
         >
           <Navlink
-            style={{ fontSize: "1.5rem" }}
             text="Contact"
             href="/contact"
             enabled={true}
-            expandedCharSpacing="12px"
+            onClick={onContactClick}
           />
         </motion.div>
-      </div>
-      <div>
+      </motion.div>
+      <motion.div
+        style={{
+          position: "fixed",
+          left: "50vw",
+          bottom: "6%",
+          x:"-50%"
+        }}
+        animate={aboutContainerAnimationControl}
+      >
         <motion.div
-          style={{
-            position: "fixed",
-            width: "100vw",
-            left: 0,
-            textAlign: "center",
-          }}
-          initial={{ opacity: 0, bottom: "0%" }}
-          animate={{ opacity: 1, bottom: "6%" }}
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           layoutId="about-HomeNavLink"
         >
           <Navlink
-            style={{ fontSize: "1.5rem" }}
             text="About"
             href="/about"
             enabled={true}
+            onClick={onAboutClick}
           />
         </motion.div>
-      </div>
-      <div>
+      </motion.div>
+      <motion.div
+        style={{
+          position: "fixed",
+          top: "50vh",
+          right: "-4%",
+          transform: "translate(0%,-50%)",
+        }}
+        animate={workContainerAnimationControl}
+      >
         <motion.div
-          style={{
-            position: "fixed",
-            top: "50vh",
-          }}
-          initial={{ opacity: 0, right: "-4%" }}
-          animate={{ opacity: 1, right: "4%" }}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
           layoutId="work-HomeNavLink"
         >
           <div
             style={{
-              transform: "translate(45%,-50%) rotate(-90deg)",
+              transform: "rotate(-90deg)",
             }}
           >
             <Navlink
-              style={{ fontSize: "2rem" }}
+              style={{ fontSize: "4rem" }}
               text="Works"
               href="/work"
               enabled={true}
             />
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -240,10 +297,10 @@ export default function Home() {
       <header>
         <nav>
           <div className={styles.desktopNavContainer}>
-            {width >= 768 && <DesktopNav onNavigate={onNavigate} />}
+            {(!width || width >= 768) && <DesktopNav onNavigate={onNavigate} />}
           </div>
           <div className={styles.mobileNavContainer + " mobile-nav"}>
-            {width < 768 && <MobileNav />}
+            {width < 768 && <MobileNav onNavigate={onNavigate} />}
           </div>
         </nav>
       </header>
