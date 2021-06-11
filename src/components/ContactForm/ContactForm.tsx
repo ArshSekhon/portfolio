@@ -10,6 +10,7 @@ import {
 import React from "react";
 import styles from "./ContactForm.module.css";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 
 function validateEmail(email) {
   const re =
@@ -18,6 +19,8 @@ function validateEmail(email) {
 }
 
 export default function ContactForm({ closeForm }) {
+  const router = useRouter();
+
   const [stepIndex, setStepIndex] = React.useState(0);
 
   const [name, setName] = React.useState("");
@@ -82,7 +85,7 @@ export default function ContactForm({ closeForm }) {
 
   const goBack = () => {
     if (stepIndex < 1) closeForm();
-    else if (stepIndex > 2) closeForm();
+    else if (stepIndex > 2) router.push("/");
     else setStepIndex((i) => i - 1);
   };
 
@@ -233,7 +236,8 @@ export default function ContactForm({ closeForm }) {
         <HStack w="100%" justify="center" spacing={5}>
           <Button
             onClick={goBack}
-            colorScheme="teal"
+            background="#fff"
+            border="2px solid #000"
             size="lg"
             fontWeight="400"
             borderRadius="0"

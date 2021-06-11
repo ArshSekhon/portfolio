@@ -1,4 +1,5 @@
 import React from "react";
+import { Text } from "@chakra-ui/layout";
 import styles from "./Main.Layout.module.css";
 
 export default function MainLayout(props) {
@@ -7,7 +8,18 @@ export default function MainLayout(props) {
       <div className={styles.container}>
         <main className={styles.main}>{props.children}</main>
       </div>
-      <footer></footer>
+      <footer
+        style={{
+          position: "absolute",
+          bottom: "1vh",
+          textAlign: "right",
+          width: "98vw",
+        }}
+      >
+        <Text color="blackAlpha.500">
+          &copy; {new Date().getFullYear()}, Arsh Sekhon
+        </Text>
+      </footer>
     </div>
   );
 }
