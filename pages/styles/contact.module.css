@@ -7,8 +7,8 @@
 }
 
 .socialIcon img {
-  height: 5rem;
-  width: 5rem;
+  height: 10vw;
+  width: 10vw;
   transition: transform .2s ease-in-out;
 }
 
