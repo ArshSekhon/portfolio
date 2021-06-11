@@ -14,6 +14,7 @@ export default function Navlink({
   fontSize = undefined,
   navigationDelay = 500,
   isExpanded = false,
+  isVertical = false,
   ...props
 }) {
   const router = useRouter();

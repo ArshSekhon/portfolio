@@ -66,7 +66,7 @@ const DesktopNav = ({ onNavigate }) => {
         style={{
           position: "fixed",
           left: "75vw",
-          x:"-50%",
+          x: "-50%",
           bottom: "6%",
         }}
       >
@@ -88,7 +88,7 @@ const DesktopNav = ({ onNavigate }) => {
         style={{
           position: "fixed",
           left: "30vw",
-          x:"-50%",
+          x: "-50%",
           bottom: "6%",
         }}
         animate={aboutContainerAnimationControl}
@@ -111,29 +111,30 @@ const DesktopNav = ({ onNavigate }) => {
         style={{
           position: "fixed",
           top: "50vh",
-          right: "-4%",
-          transform: "translate(0%,-50%)",
+          right: "10vh",
+          x: "50%",
+          // transform: "translate(-50%,-50%) rotate(-90deg)",
         }}
         animate={workContainerAnimationControl}
       >
         <motion.div
-          initial={{ opacity: 0, x: 100 }}
+          initial={{ opacity: 0, x: 100, position: "relative" }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
           layoutId="work-HomeNavLink"
         >
-          <div
+          <Navlink
+            fontSize="4rem"
+            text="Works"
+            href="/work"
+            enabled={true}
             style={{
               transform: "rotate(-90deg)",
+              position: "relative",
+              right: "0%",
+              top: "50%",
             }}
-          >
-            <Navlink
-              style={{ fontSize: "4rem" }}
-              text="Works"
-              href="/work"
-              enabled={true}
-            />
-          </div>
+          />
         </motion.div>
       </motion.div>
     </div>
@@ -156,7 +157,7 @@ const MobileNav = ({ onNavigate }) => {
 
     aboutContainerAnimationControl.start({
       position: "fixed",
-      y:"100%",
+      y: "100%",
       opacity: 0,
       transition: { duration: 0.4, ease: "easeOut" },
     });
@@ -199,7 +200,7 @@ const MobileNav = ({ onNavigate }) => {
           position: "fixed",
           left: "50vw",
           top: "6%",
-          x:"-50%"
+          x: "-50%",
         }}
       >
         <motion.div
@@ -221,7 +222,7 @@ const MobileNav = ({ onNavigate }) => {
           position: "fixed",
           left: "50vw",
           bottom: "6%",
-          x:"-50%"
+          x: "-50%",
         }}
         animate={aboutContainerAnimationControl}
       >
@@ -259,12 +260,7 @@ const MobileNav = ({ onNavigate }) => {
               transform: "rotate(-90deg)",
             }}
           >
-            <Navlink
-              style={{ fontSize: "4rem" }}
-              text="Works"
-              href="/work"
-              enabled={true}
-            />
+            <Navlink fontSize="4rem" text="Works" href="/work" enabled={true} />
           </div>
         </motion.div>
       </motion.div>
