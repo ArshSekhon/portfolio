@@ -9,6 +9,8 @@
 .socialIcon img {
   height: 10vw;
   width: 10vw;
+  max-width: 75px;
+  max-height: 75px;
   transition: transform .2s ease-in-out;
 }
 

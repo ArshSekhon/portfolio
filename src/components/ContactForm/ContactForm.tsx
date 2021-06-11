@@ -88,7 +88,7 @@ export default function ContactForm({ closeForm }) {
 
   return (
     <div id="compose-message">
-      <form id="message-form">
+      <form id="message-form" onSubmit={(e) => e.preventDefault()}>
         <div id="questions-wrapper" style={{ marginBottom: "5vh" }}>
           <AnimatePresence>
             {stepIndex === 0 && (
@@ -242,7 +242,7 @@ export default function ContactForm({ closeForm }) {
                 "0 0 1px 2px rgba(0, 0, 0, .50), 0 1px 1px rgba(0, 0, 0, .15)",
             }}
           >
-            BACK
+            {stepIndex === 3 ? "TAKE ME HOME" : "BACK"}
           </Button>
           {stepIndex < 3 && (
             <Button

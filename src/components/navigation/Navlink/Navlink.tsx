@@ -31,7 +31,7 @@ export default function Navlink({
   }
 
   if (!fontSize) {
-    fontSize = useBreakpointValue({ base: "24px", md: "48px", sm: "36px" });
+    fontSize = useBreakpointValue({ base: "2rem", md: "2rem", sm: "2rem" });
   }
 
   if (isExpanded) normalCharSpacing = expandedCharSpacing;
