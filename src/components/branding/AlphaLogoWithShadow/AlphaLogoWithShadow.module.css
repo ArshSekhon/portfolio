@@ -41,7 +41,23 @@
   margin-left: 10%;
 }
 
-@media all and (orientation: portrait) {
+@media all and (max-width: 768px) {
+  .alphaLogo {
+    width: 35vw;
+    height: auto;
+    z-index: 1000;
+  }
+
+  .alphaShadow {
+    width: 30vw;
+    height: auto;
+    margin-top: 25%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
+@media all and (max-width: 512px) {
   .alphaLogo {
     width: 50vw;
     height: auto;
