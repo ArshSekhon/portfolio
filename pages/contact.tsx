@@ -57,8 +57,6 @@ export default function ContactPage() {
     setOpen(false);
   });
 
-  const [width, height] = useWindowSize();
-
   return (
     <>
       {Open && (

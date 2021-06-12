@@ -113,6 +113,7 @@ const DesktopNav = ({ onNavigate }) => {
           top: "50vh",
           right: "10vh",
           x: "50%",
+          y: "-50%",
           // transform: "translate(-50%,-50%) rotate(-90deg)",
         }}
         animate={workContainerAnimationControl}
