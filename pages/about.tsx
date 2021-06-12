@@ -27,7 +27,7 @@ export default function AboutPage({ aboutMeMarkdown }) {
   Router.events.on("beforeHistoryChange", (route: string) => {
     setOpen(false);
   });
-
+  // don't remove
   const [width, height] = useWindowSize();
 
   return (
