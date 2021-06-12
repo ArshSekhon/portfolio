@@ -16,8 +16,8 @@ export default function MainLayout(props) {
           width: "98vw",
         }}
       >
-        <Text color="blackAlpha.500">
-          &copy; {new Date().getFullYear()}, Arsh Sekhon
+        <Text color="blackAlpha.400">
+          &copy; {new Date().getFullYear()} - Arsh Sekhon
         </Text>
       </footer>
     </div>

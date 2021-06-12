@@ -1,5 +1,4 @@
 import React from "react";
-import { TweenMax, TimelineMax, Power0, Power2 } from "gsap";
 import { motion } from "framer-motion";
 
 import styles from "./AlphaLogoWithShadow.module.css";

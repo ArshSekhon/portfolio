@@ -41,7 +41,7 @@
   margin-left: 10%;
 }
 
-@media all and (max-width: 768px) {
+@media all and (max-width: 1024px) {
   .alphaLogo {
     width: 35vw;
     height: auto;
@@ -57,7 +57,7 @@
   }
 
 }
-@media all and (max-width: 512px) {
+@media all and (max-width: 768px) {
   .alphaLogo {
     width: 50vw;
     height: auto;

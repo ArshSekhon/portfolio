@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navlink from "../src/components/navigation/Navlink/Navlink";
 import { Router } from "next/router";
 import useWindowSize from "../src/hooks/useWindowSize";
+import Head from "next/head";
 
 import { Container, Text, Stack, Box, Button, HStack } from "@chakra-ui/react";
 
@@ -56,12 +57,15 @@ export default function ContactPage() {
   Router.events.on("beforeHistoryChange", (route: string) => {
     setOpen(false);
   });
-  
+
   // don't remove
   const [width, height] = useWindowSize();
 
   return (
     <>
+      <Head>
+        <title>Contact - Arsh Sekhon</title>
+      </Head>
       {Open && (
         <div>
           <motion.div

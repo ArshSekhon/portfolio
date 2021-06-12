@@ -5,6 +5,7 @@ import AlphaLogoWithShadow from "../branding/AlphaLogoWithShadow/AlphaLogoWithSh
 import styles from "./Home.module.css";
 import Navlink from "../navigation/Navlink/Navlink";
 import useWindowSize from "../../hooks/useWindowSize";
+import { useBreakpointValue } from "@chakra-ui/react";
 
 const DesktopNav = ({ onNavigate }) => {
   const contactContainerAnimationControl = useAnimation();
@@ -58,6 +59,26 @@ const DesktopNav = ({ onNavigate }) => {
       transition: { duration: 0.4, ease: "easeOut" },
     });
   };
+
+  const onWorkClick = () => {
+    if (onNavigate) onNavigate();
+    aboutContainerAnimationControl.start({
+      position: "fixed",
+      opacity: 0,
+      y: "100%",
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    contactContainerAnimationControl.start({
+      position: "fixed",
+      opacity: 0,
+      y: "100%",
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+  };
+
+  const workFontSize =
+    useBreakpointValue({ base: "2.5rem", md: "3rem" }) || "2.5rem";
 
   return (
     <div>
@@ -114,7 +135,6 @@ const DesktopNav = ({ onNavigate }) => {
           right: "10vh",
           x: "50%",
           y: "-50%",
-          // transform: "translate(-50%,-50%) rotate(-90deg)",
         }}
         animate={workContainerAnimationControl}
       >
@@ -125,10 +145,11 @@ const DesktopNav = ({ onNavigate }) => {
           layoutId="work-HomeNavLink"
         >
           <Navlink
-            fontSize="4rem"
+            fontSize={workFontSize}
             text="Works"
             href="/work"
             enabled={true}
+            onClick={onWorkClick}
             style={{
               transform: "rotate(-90deg)",
               position: "relative",
@@ -193,6 +214,26 @@ const MobileNav = ({ onNavigate }) => {
     });
   };
 
+  const onWorkClick = () => {
+    if (onNavigate) onNavigate();
+    contactContainerAnimationControl.start({
+      position: "fixed",
+      opacity: 0,
+      y: "-100%",
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    aboutContainerAnimationControl.start({
+      position: "fixed",
+      y: "100%",
+      opacity: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    });
+  };
+
+  const workFontSize =
+    useBreakpointValue({ base: "2.5rem", md: "3rem" }) || "2.5rem";
+
   return (
     <div>
       <motion.div
@@ -245,24 +286,31 @@ const MobileNav = ({ onNavigate }) => {
         style={{
           position: "fixed",
           top: "50vh",
-          right: "-4%",
-          transform: "translate(0%,-50%)",
+          right: "5vh",
+          x: "50%",
+          y: "-50%",
         }}
         animate={workContainerAnimationControl}
       >
         <motion.div
-          initial={{ opacity: 0, x: 100 }}
+          initial={{ opacity: 0, x: 100, position: "relative" }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
           layoutId="work-HomeNavLink"
         >
-          <div
+          <Navlink
+            fontSize={workFontSize}
+            text="Works"
+            href="/work"
+            enabled={true}
+            onClick={onWorkClick}
             style={{
               transform: "rotate(-90deg)",
+              position: "relative",
+              right: "0%",
+              top: "50%",
             }}
-          >
-            <Navlink fontSize="4rem" text="Works" href="/work" enabled={true} />
-          </div>
+          />
         </motion.div>
       </motion.div>
     </div>
