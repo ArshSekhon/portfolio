@@ -5,7 +5,6 @@ import { AppContextProvider } from "../src/providers/AppContext";
 import MainLayout from "../src/components/layouts/Main.Layout";
 import Head from "next/head";
 import { Router } from "next/router";
-
 import NProgress from "nprogress";
 import "nprogress/nprogress.css"; //styles of nprogress
 

@@ -8,7 +8,8 @@ import Head from "next/head";
 import styles from "./styles/about.module.css";
 import { useAppContext } from "../src/providers/AppContext";
 
-import ReactMarkdown from "react-markdown";
+import Markdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 export default function AboutPage({ aboutMeMarkdown }) {
   const appCtx = useAppContext();
@@ -28,11 +29,24 @@ export default function AboutPage({ aboutMeMarkdown }) {
     return () => {
       Router.events.off("beforeHistoryChange", routeChangeCallback);
     };
-
   }, []);
 
   // don't remove
   const [width, height] = useWindowSize();
+
+  const markdownTheme = {
+    a: (props) => {
+      const { children } = props;
+      return (
+        <a
+          href={props.href}
+          style={{ color: "#0755a5", textDecoration: "underline" }}
+        >
+          {children}
+        </a>
+      );
+    },
+  };
 
   return (
     <>
@@ -57,11 +71,21 @@ export default function AboutPage({ aboutMeMarkdown }) {
         exit={{ y: "10%", opacity: 0 }}
         transition={{ delay: appCtx.data.introViewed ? 1.3 : 0, duration: 1 }}
       >
-        <Container maxW="container.lg" margin="5vh 0 10vh" paddingX="10%">
+        <Container
+          maxW={{
+            base: "container.sm",
+            sm: "container.sm",
+            xl: "container.lg",
+          }}
+          margin="5vh 0 10vh"
+          paddingX="10%"
+        >
           <Stack spacing={3} alignItems="flex-start">
             <div className={styles.helloAbout}>Hello,</div>
             <div>
-              <ReactMarkdown>{aboutMeMarkdown}</ReactMarkdown>
+              <Markdown components={ChakraUIRenderer(markdownTheme)}>
+                {aboutMeMarkdown}
+              </Markdown>
             </div>
           </Stack>
         </Container>

@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^1.6.3",
+    "@chakra-ui/theme": "^1.9.0",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "chakra-ui-markdown-renderer": "^3.0.1",
     "framer-motion": "^4.1.17",
     "next": "10.2.3",
     "node-mailjet": "^3.3.4",
