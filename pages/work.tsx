@@ -28,11 +28,13 @@ export default function Work() {
     setTimeout(() => {
       setTitleExpanded(false);
     }, 1100);
-  }, []);
 
-  Router.events.on("beforeHistoryChange", (route: string) => {
-    setOpen(false);
-  });
+    const routeChangeCallback = () => setOpen(false);
+    Router.events.on("beforeHistoryChange", routeChangeCallback);
+    return () => {
+      Router.events.off("beforeHistoryChange", routeChangeCallback);
+    };
+  }, []);
 
   const workFontSize =
     useBreakpointValue({ base: "2.5rem", md: "3rem" }) || "2.5rem";

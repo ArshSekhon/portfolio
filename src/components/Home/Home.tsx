@@ -341,12 +341,10 @@ export default function Home() {
     <div>
       <header>
         <nav>
-          <div className={styles.desktopNavContainer}>
-            {(!width || width >= 768) && <DesktopNav onNavigate={onNavigate} />}
+          <div>
+            {(width && width > 768) && <DesktopNav onNavigate={onNavigate} />}
           </div>
-          <div className={styles.mobileNavContainer + " mobile-nav"}>
-            {width < 768 && <MobileNav onNavigate={onNavigate} />}
-          </div>
+          <div>{width && width <= 768 && <MobileNav onNavigate={onNavigate} />}</div>
         </nav>
       </header>
       <div>

@@ -22,11 +22,15 @@ export default function AboutPage({ aboutMeMarkdown }) {
       },
       appCtx.data.introViewed ? 1100 : 0
     );
+
+    const routeChangeCallback = () => setOpen(false);
+    Router.events.on("beforeHistoryChange", routeChangeCallback);
+    return () => {
+      Router.events.off("beforeHistoryChange", routeChangeCallback);
+    };
+
   }, []);
 
-  Router.events.on("beforeHistoryChange", (route: string) => {
-    setOpen(false);
-  });
   // don't remove
   const [width, height] = useWindowSize();
 

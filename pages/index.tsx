@@ -58,12 +58,14 @@ export default function HomePage() {
         <IntroText
           showIntro={showIntro}
           setIntroComplete={() => {
-            setIntroComplete(true);
+            setTimeout(() => {
+              setIntroComplete(true);
+            }, 300);
             appCtx.loadComplete();
           }}
         />
       )}
-      {introComplete && <Home />}
+      {loadingAnimationComplete && introComplete && <Home />}
     </div>
   );
 }

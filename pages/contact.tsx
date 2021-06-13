@@ -52,11 +52,13 @@ export default function ContactPage() {
     setTimeout(() => {
       setTitleExpanded(false);
     }, 1100);
-  }, []);
 
-  Router.events.on("beforeHistoryChange", (route: string) => {
-    setOpen(false);
-  });
+    const routeChangeCallback = () => setOpen(false);
+    Router.events.on("beforeHistoryChange", routeChangeCallback);
+    return () => {
+      Router.events.off("beforeHistoryChange", routeChangeCallback);
+    };
+  }, []);
 
   // don't remove
   const [width, height] = useWindowSize();

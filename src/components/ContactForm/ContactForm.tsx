@@ -6,11 +6,14 @@ import {
   Button,
   HStack,
   background,
+  Progress,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ContactForm.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function validateEmail(email) {
   const re =
@@ -20,14 +23,59 @@ function validateEmail(email) {
 
 export default function ContactForm({ closeForm }) {
   const router = useRouter();
+  const toast = useToast();
 
   const [stepIndex, setStepIndex] = React.useState(0);
 
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [message, setMessage] = React.useState("");
+  const [sendingMessage, setSendingMessage] = React.useState(false);
+
   const [error, setError] = React.useState("");
   const [errorStep, setErrorStep] = React.useState(0);
+  const [captchaHumanKey, setCaptchaHumanKey] = React.useState();
+
+  const sendMessage = async () => {
+    const payload = { name, email, message, captchaHumanKey };
+
+    setSendingMessage(true);
+
+    const response = await fetch("/api/sendMessage", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    setSendingMessage(false);
+
+    if (response.status !== 200) {
+      const errorText =
+        "Failed to send message. Please consider contacting directly by sending an email to arshsekhon1998@gmail.com.";
+      toast({
+        title: errorText,
+        status: "error",
+        isClosable: true,
+      });
+      console.error(errorText);
+    }
+    toast({
+      title: "Message sent successfully!",
+      status: "success",
+      isClosable: true,
+    });
+
+    return;
+  };
+  const verifyCaptcha = (key) => {
+    setCaptchaHumanKey(key);
+  };
+  const expireCaptcha = () => {
+    setCaptchaHumanKey(null);
+  };
 
   const ErrorBanner = () => {
     return <div style={{ textAlign: "left", color: "maroon" }}>{error}</div>;
@@ -83,10 +131,15 @@ export default function ContactForm({ closeForm }) {
     validateForm();
   }, [stepIndex, name, email, message]);
 
-  const goBack = () => {
+  const onBackClick = () => {
     if (stepIndex < 1) closeForm();
     else if (stepIndex > 2) router.push("/");
     else setStepIndex((i) => i - 1);
+  };
+
+  const onNextClick = async () => {
+    if (stepIndex == 2) await sendMessage();
+    setStepIndex((i) => i + 1);
   };
 
   return (
@@ -217,25 +270,43 @@ export default function ContactForm({ closeForm }) {
                   }}
                 ></Textarea>
                 <ErrorBanner />
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  // render="explicit"
+                  // onloadCallback={this.onCaptchaLoad}
+                  onChange={verifyCaptcha}
+                  onExpired={expireCaptcha}
+                />
+                {true && <Progress size="xs" isIndeterminate />}
               </Stack>
             </motion.div>
           )}
 
           {stepIndex === 3 && (
-            <Heading
-              size="4xl"
-              textAlign="left"
-              fontFamily="Open Sans"
-              as="label"
-              htmlFor="message-input"
+            <motion.div
+              initial={{ opacity: 0, y: "5vh" }}
+              animate={{ opacity: 1, y: "0vh" }}
+              exit={{ opacity: 0, display: "none" }}
+              transition={{
+                duration: 1,
+                ease: "easeInOut",
+              }}
             >
-              Thanks, I will be in touch!
-            </Heading>
+              <Heading
+                size="4xl"
+                textAlign="left"
+                fontFamily="Open Sans"
+                as="label"
+                htmlFor="message-input"
+              >
+                Thanks, I will be in touch!
+              </Heading>
+            </motion.div>
           )}
         </div>
         <HStack w="100%" justify="center" spacing={5}>
           <Button
-            onClick={goBack}
+            onClick={onBackClick}
             background="#fff"
             border="2px solid #000"
             size="lg"
@@ -250,10 +321,11 @@ export default function ContactForm({ closeForm }) {
           </Button>
           {stepIndex < 3 && (
             <Button
-              disabled={errorStep === stepIndex}
-              onClick={() => {
-                setStepIndex((i) => i + 1);
-              }}
+              disabled={
+                errorStep === stepIndex ||
+                (stepIndex == 2 && !captchaHumanKey && !sendingMessage)
+              }
+              onClick={onNextClick}
               colorScheme="teal"
               size="lg"
               background="black"
