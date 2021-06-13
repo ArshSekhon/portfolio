@@ -96,7 +96,7 @@ export default function AboutPage({ aboutMeMarkdown }) {
 
 export const getServerSideProps = async () => {
   const aboutMeMarkdown = await fetch(
-    "https://raw.githubusercontent.com/MykalMachon/MykalMachon/master/README.md"
+    process.env.NEXT_PUBLIC_ABOUT_MARKDOWN_URL
   ).then((data) => data.text());
 
   return { props: { aboutMeMarkdown } };
