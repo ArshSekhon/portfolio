@@ -277,7 +277,7 @@ export default function ContactForm({ closeForm }) {
                   onChange={verifyCaptcha}
                   onExpired={expireCaptcha}
                 />
-                {true && <Progress size="xs" isIndeterminate />}
+                {sendingMessage && <Progress size="xs" isIndeterminate />}
               </Stack>
             </motion.div>
           )}
@@ -323,7 +323,7 @@ export default function ContactForm({ closeForm }) {
             <Button
               disabled={
                 errorStep === stepIndex ||
-                (stepIndex == 2 && !captchaHumanKey && !sendingMessage)
+                (stepIndex == 2 && (!captchaHumanKey || sendingMessage))
               }
               onClick={onNextClick}
               colorScheme="teal"
