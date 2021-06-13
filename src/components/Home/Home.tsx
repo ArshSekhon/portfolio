@@ -241,7 +241,7 @@ const MobileNav = ({ onNavigate }) => {
         style={{
           position: "fixed",
           left: "50vw",
-          top: "6%",
+          top: "15%",
           x: "-50%",
         }}
       >
@@ -263,7 +263,7 @@ const MobileNav = ({ onNavigate }) => {
         style={{
           position: "fixed",
           left: "50vw",
-          bottom: "6%",
+          bottom: "15%",
           x: "-50%",
         }}
         animate={aboutContainerAnimationControl}
