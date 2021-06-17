@@ -29,16 +29,18 @@ const DownloadResumeButton = () => {
         fontSize="xs"
       >
         <div>
-          <RainbowButton
-            style={{ height: "3em", width: "3em", padding: "0.75em" }}
-          >
-            <span
-              className="material-icons-outlined"
-              style={{ margin: "auto" }}
+          <a href="/resume.pdf" target="_blank">
+            <RainbowButton
+              style={{ height: "3em", width: "3em", padding: "0.75em" }}
             >
-              badge
-            </span>
-          </RainbowButton>
+              <span
+                className="material-icons-outlined"
+                style={{ margin: "auto" }}
+              >
+                badge
+              </span>
+            </RainbowButton>
+          </a>
         </div>
       </Tooltip>
     </motion.div>
