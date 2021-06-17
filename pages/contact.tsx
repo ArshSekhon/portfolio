@@ -67,6 +67,13 @@ export default function ContactPage() {
     <>
       <Head>
         <title>Contact - Arsh Sekhon</title>
+        <meta
+          name="description"
+          content="Hey There! I'm  Arsh Sekhon, an experienced Software Developer 
+          with several years of experience developing enterprise scale software.
+          I started out as a Graphics Designer, so I have a keen eye for detail and 
+          design in the work I produce."
+        />
       </Head>
       {Open && (
         <div>
