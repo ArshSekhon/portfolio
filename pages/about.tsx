@@ -101,7 +101,7 @@ export default function AboutPage({ aboutMeMarkdown }) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async (context) => {
   const aboutMeMarkdown = await fetch(
     process.env.NEXT_PUBLIC_ABOUT_MARKDOWN_URL
   ).then((data) => data.text());
