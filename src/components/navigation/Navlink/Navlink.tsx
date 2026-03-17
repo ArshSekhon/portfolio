@@ -20,7 +20,7 @@ export default function Navlink({
   const router = useRouter();
   const strikeoutAnimationControl = useAnimation();
   const [isClicked, setIsClicked] = React.useState(false);
-  const [isScreenLargerThan768] = useMediaQuery("(min-width: 768px)");
+  const [isScreenLargerThan768] = useMediaQuery(["(min-width: 768px)"]);
 
   //set default values
   if (!normalCharSpacing) {

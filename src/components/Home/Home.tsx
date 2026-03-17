@@ -95,7 +95,6 @@ const DesktopNav = ({ onNavigate }) => {
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          layoutId="contact-HomeNavLink"
         >
           <Navlink
             text="Contact"
@@ -118,7 +117,6 @@ const DesktopNav = ({ onNavigate }) => {
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          layoutId="about-HomeNavLink"
         >
           <Navlink
             text="About"
@@ -142,7 +140,6 @@ const DesktopNav = ({ onNavigate }) => {
           initial={{ opacity: 0, x: 100, position: "relative" }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          layoutId="work-HomeNavLink"
         >
           <Navlink
             fontSize={workFontSize}
@@ -249,7 +246,6 @@ const MobileNav = ({ onNavigate }) => {
           initial={{ opacity: 0, y: -100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          layoutId="contact-HomeNavLink"
         >
           <Navlink
             text="Contact"
@@ -272,7 +268,6 @@ const MobileNav = ({ onNavigate }) => {
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          layoutId="about-HomeNavLink"
         >
           <Navlink
             text="About"
@@ -296,7 +291,6 @@ const MobileNav = ({ onNavigate }) => {
           initial={{ opacity: 0, x: 100, position: "relative" }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          layoutId="work-HomeNavLink"
         >
           <Navlink
             fontSize={workFontSize}

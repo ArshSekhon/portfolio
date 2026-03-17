@@ -54,7 +54,7 @@ export default function Work() {
             y: "-50%",
           }}
         >
-          <motion.div transition={{ duration: 1 }} layoutId="work-HomeNavLink">
+          <motion.div transition={{ duration: 1 }}>
             <Navlink
               fontSize={workFontSize}
               text="Works"
@@ -83,16 +83,16 @@ export default function Work() {
           width="70vw"
         >
           <Grid
-            spacing={2}
+            gap={2}
             rowGap={20}
             columnGap={10}
-            justify="space-evenly"
+            justifyContent="space-evenly"
             alignContent="center"
             alignItems="center"
             templateColumns={{ base: "1fr", md: "1fr 1fr" }}
           >
             <GridItem>
-              <Stack textAlign="center" spacing={5}>
+              <Stack textAlign="center" gap={5}>
                 <Heading fontSize={{ base: "2rem", md: "2.5rem" }}>
                   ME AS A DEVELOPER.
                 </Heading>
@@ -131,7 +131,7 @@ export default function Work() {
               </Stack>
             </GridItem>
             <GridItem>
-              <Stack textAlign="center" spacing={5} alignContent="center">
+              <Stack textAlign="center" gap={5} alignContent="center">
                 <Heading fontSize={{ base: "2rem", md: "2.5rem" }}>
                   ME AS A DESIGNER.
                 </Heading>

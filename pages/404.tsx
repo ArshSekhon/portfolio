@@ -14,7 +14,7 @@ export default function NotFoundPage() {
         justifyItems="center"
         textAlign="center"
       >
-        <Stack spacing={10}>
+        <Stack gap={10}>
           <div
             className={styles.glitchWrapper}
             style={{ width: "100%", overflow: "hidden" }}

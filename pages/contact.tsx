@@ -14,7 +14,7 @@ import { useAppContext } from "../src/providers/AppContext";
 const ContactOptions = () => {
   return (
     <>
-      <HStack spacing={5}>
+      <HStack gap={5}>
         <div className={styles.socialIcon}>
           <a target="_blank" href="https://www.linkedin.com/in/arsh-sekhon/">
             <img src="/assets/socials/linkedin.svg" alt="linkedin_icon" />
@@ -81,7 +81,6 @@ export default function ContactPage() {
             initial={appCtx.data.introViewed ? {} : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
-            layoutId="contact-HomeNavLink"
           >
             <Navlink
               text="Contact"
@@ -95,7 +94,7 @@ export default function ContactPage() {
       <Container
         maxW="none"
         minH="300px"
-        align="center"
+        alignItems="center"
         justifyContent="flex-start"
         marginTop="5vh"
       >
@@ -104,7 +103,7 @@ export default function ContactPage() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.3, duration: 1 }}
         >
-          <Stack spacing={10} align="center">
+          <Stack gap={10} align="center">
             {!contactFormOpen && (
               <>
                 <h1 className={styles.sayHello}>Say Hello!</h1>

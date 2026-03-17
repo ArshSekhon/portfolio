@@ -26,7 +26,6 @@ const Nav = ({ isMobile = false }) => {
           isMobile ? { opacity: 1, top: "4%" } : { opacity: 1, bottom: "4%" }
         }
         transition={{ duration: 1 }}
-        layoutId="contactHomeNavLink"
       >
         <Navlink text="Contact" href="/contact" enabled={true} />
       </motion.div>

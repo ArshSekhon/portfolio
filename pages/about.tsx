@@ -9,7 +9,6 @@ import styles from "./styles/about.module.css";
 import { useAppContext } from "../src/providers/AppContext";
 
 import Markdown from "react-markdown";
-import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 export default function AboutPage({ aboutMeMarkdown }) {
   const appCtx = useAppContext();
@@ -62,7 +61,7 @@ export default function AboutPage({ aboutMeMarkdown }) {
       </Head>
       {Open && (
         <div>
-          <motion.div transition={{ duration: 1 }} layoutId="about-HomeNavLink">
+          <motion.div transition={{ duration: 1 }}>
             <Navlink
               text="About"
               href="/about"
@@ -87,10 +86,10 @@ export default function AboutPage({ aboutMeMarkdown }) {
           margin="5vh 0 10vh"
           paddingX="10%"
         >
-          <Stack spacing={3} alignItems="flex-start">
+          <Stack gap={3} alignItems="flex-start">
             <div className={styles.helloAbout}>Hello,</div>
             <div>
-              <Markdown components={ChakraUIRenderer(markdownTheme)}>
+              <Markdown components={markdownTheme}>
                 {aboutMeMarkdown}
               </Markdown>
             </div>
@@ -102,9 +101,12 @@ export default function AboutPage({ aboutMeMarkdown }) {
 }
 
 export const getStaticProps = async (context) => {
-  const aboutMeMarkdown = await fetch(
-    process.env.NEXT_PUBLIC_ABOUT_MARKDOWN_URL
-  ).then((data) => data.text());
+  const url = process.env.NEXT_PUBLIC_ABOUT_MARKDOWN_URL;
+  let aboutMeMarkdown = "";
+
+  if (url) {
+    aboutMeMarkdown = await fetch(url).then((data) => data.text());
+  }
 
   return { props: { aboutMeMarkdown } };
 };

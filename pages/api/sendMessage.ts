@@ -1,24 +1,12 @@
-// pages/api/register.js
-import fetch from "node-fetch";
-import * as mailJet from "node-mailjet";
-import { Email } from "node-mailjet";
-
-export type EmailToSend = Omit<Email.SendParamsMessage, "From" | "Sender">;
-
-const sleep = () =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({});
-    }, 350);
-  });
+import Mailjet from "node-mailjet";
 
 const sendEmail = async (name, email, message) => {
-  const mailJetClient = mailJet.connect(
-    process.env.MJ_APIKEY_PUBLIC,
-    process.env.MJ_APIKEY_PRIVATE
-  );
+  const mailjetClient = new Mailjet({
+    apiKey: process.env.MJ_APIKEY_PUBLIC,
+    apiSecret: process.env.MJ_APIKEY_PRIVATE,
+  });
 
-  return mailJetClient
+  return mailjetClient
     .post("send", { version: "v3.1" })
     .request({
       Messages: [
@@ -40,12 +28,12 @@ const sendEmail = async (name, email, message) => {
             <title>Contact Request</title>
             </head>
             <body>
-            
+
             <h1>Contact Request</h1>
             <p><b>Name:</b> ${name}</p>
             <p><b>Email:</b> ${email}</p>
             <p><b>Message:</b> ${message}</p>
-            
+
             </body>
             </html>
             `,

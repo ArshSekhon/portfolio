@@ -5,15 +5,14 @@ import {
   Stack,
   Button,
   HStack,
-  background,
   Progress,
-  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import styles from "./ContactForm.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import ReCAPTCHA from "react-google-recaptcha";
+import { toaster } from "../../providers/toaster";
 
 function validateEmail(email) {
   const re =
@@ -23,7 +22,6 @@ function validateEmail(email) {
 
 export default function ContactForm({ closeForm }) {
   const router = useRouter();
-  const toast = useToast();
 
   const [stepIndex, setStepIndex] = React.useState(0);
 
@@ -55,17 +53,13 @@ export default function ContactForm({ closeForm }) {
     if (response.status !== 200) {
       const errorText =
         "Failed to send message. Please consider contacting directly by sending an email to arshsekhon1998@gmail.com.";
-      toast({
+      toaster.error({
         title: errorText,
-        status: "error",
-        isClosable: true,
       });
       console.error(errorText);
     }
-    toast({
+    toaster.success({
       title: "Message sent successfully!",
-      status: "success",
-      isClosable: true,
     });
 
     return;
@@ -157,27 +151,27 @@ export default function ContactForm({ closeForm }) {
                   ease: "easeInOut",
                 }}
               >
-                <Stack spacing={5}>
-                  <Heading
-                    textAlign="left"
-                    fontFamily="Open Sans"
-                    as="label"
-                    htmlFor="name-input"
-                    className={styles.label}
-                  >
-                    What's your name?
-                  </Heading>
+                <Stack gap={5}>
+                  <label htmlFor="name-input">
+                    <Heading
+                      textAlign="left"
+                      fontFamily="Open Sans"
+                      className={styles.label}
+                    >
+                      What's your name?
+                    </Heading>
+                  </label>
                   <Input
                     type="text"
                     name="Name"
                     borderRadius="0"
-                    autoComplete="false|off"
+                    autoComplete="off"
                     className={styles.input}
                     id="name-input"
-                    focusBorderColor="#c2c2c2"
                     height="auto"
                     background="#e8e8e8"
                     color="rgba(0,0,0,.52)"
+                    _focus={{ borderColor: "#c2c2c2" }}
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
@@ -200,27 +194,27 @@ export default function ContactForm({ closeForm }) {
                   ease: "easeInOut",
                 }}
               >
-                <Stack spacing={5}>
-                  <Heading
-                    textAlign="left"
-                    fontFamily="Open Sans"
-                    as="label"
-                    htmlFor="email-input"
-                    className={styles.label}
-                  >
-                    What's your email?
-                  </Heading>
+                <Stack gap={5}>
+                  <label htmlFor="email-input">
+                    <Heading
+                      textAlign="left"
+                      fontFamily="Open Sans"
+                      className={styles.label}
+                    >
+                      What's your email?
+                    </Heading>
+                  </label>
                   <Input
                     type="email"
                     name="Email"
                     borderRadius="0"
-                    autoComplete="false|off"
+                    autoComplete="off"
                     className={styles.input}
                     id="email-input"
-                    focusBorderColor="#c2c2c2"
                     background="#e8e8e8"
                     height="auto"
                     color="rgba(0,0,0,.52)"
+                    _focus={{ borderColor: "#c2c2c2" }}
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
@@ -242,28 +236,28 @@ export default function ContactForm({ closeForm }) {
                 ease: "easeInOut",
               }}
             >
-              <Stack spacing={5}>
-                <Heading
-                  textAlign="left"
-                  fontFamily="Open Sans"
-                  as="label"
-                  htmlFor="message-input"
-                  className={styles.label}
-                >
-                  What's your message?
-                </Heading>
+              <Stack gap={5}>
+                <label htmlFor="message-input">
+                  <Heading
+                    textAlign="left"
+                    fontFamily="Open Sans"
+                    className={styles.label}
+                  >
+                    What's your message?
+                  </Heading>
+                </label>
 
                 <Textarea
                   rows={5}
                   name="Message"
                   borderRadius="0"
-                  autoComplete="false|off"
+                  autoComplete="off"
                   className={styles.input + " " + styles.textArea}
                   id="message-input"
-                  focusBorderColor="#c2c2c2"
                   background="#e8e8e8"
                   height="auto"
                   color="rgba(0,0,0,.52)"
+                  _focus={{ borderColor: "#c2c2c2" }}
                   value={message}
                   onChange={(e) => {
                     setMessage(e.target.value);
@@ -272,12 +266,17 @@ export default function ContactForm({ closeForm }) {
                 <ErrorBanner />
                 <ReCAPTCHA
                   sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                  // render="explicit"
-                  // onloadCallback={this.onCaptchaLoad}
                   onChange={verifyCaptcha}
                   onExpired={expireCaptcha}
                 />
-                {sendingMessage && <Progress size="xs" isIndeterminate />}
+                {sendingMessage && (
+                  <Progress.Root value={null} size="xs">
+                    {/* @ts-expect-error Chakra v3 Progress compound component types */}
+                    <Progress.Track>
+                      <Progress.Range />
+                    </Progress.Track>
+                  </Progress.Root>
+                )}
               </Stack>
             </motion.div>
           )}
@@ -296,15 +295,13 @@ export default function ContactForm({ closeForm }) {
                 size="4xl"
                 textAlign="left"
                 fontFamily="Open Sans"
-                as="label"
-                htmlFor="message-input"
               >
                 Thanks, I will be in touch!
               </Heading>
             </motion.div>
           )}
         </div>
-        <HStack w="100%" justify="center" spacing={5}>
+        <HStack w="100%" justify="center" gap={5}>
           <Button
             onClick={onBackClick}
             background="#fff"
@@ -326,7 +323,7 @@ export default function ContactForm({ closeForm }) {
                 (stepIndex == 2 && (!captchaHumanKey || sendingMessage))
               }
               onClick={onNextClick}
-              colorScheme="teal"
+              colorPalette="teal"
               size="lg"
               background="black"
               _hover={{ background: "blackAlpha.900" }}

@@ -1,9 +1,8 @@
 import React from "react";
-import { Text } from "@chakra-ui/layout";
+import { Text } from "@chakra-ui/react";
 import styles from "./Main.Layout.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import RainbowButton from "../RainbowButton/RainbowButton";
-import { Tooltip } from "@chakra-ui/react";
 import { useAppContext } from "../../providers/AppContext";
 
 const DownloadResumeButton = () => {
@@ -18,31 +17,20 @@ const DownloadResumeButton = () => {
         ease: "easeInOut",
       }}
     >
-      <Tooltip
-        label="Resume"
-        zIndex={1000}
-        hasArrow
-        position="absolute"
-        placement="top"
-        fontWeight="light"
-        fontFamily="Open Sans"
-        fontSize="xs"
-      >
-        <div>
-          <a href="/resume.pdf" target="_blank">
-            <RainbowButton
-              style={{ height: "3em", width: "3em", padding: "0.75em" }}
+      <div title="Resume">
+        <a href="/resume.pdf" target="_blank">
+          <RainbowButton
+            style={{ height: "3em", width: "3em", padding: "0.75em" }}
+          >
+            <span
+              className="material-icons-outlined"
+              style={{ margin: "auto" }}
             >
-              <span
-                className="material-icons-outlined"
-                style={{ margin: "auto" }}
-              >
-                badge
-              </span>
-            </RainbowButton>
-          </a>
-        </div>
-      </Tooltip>
+              badge
+            </span>
+          </RainbowButton>
+        </a>
+      </div>
     </motion.div>
   );
 };
@@ -70,7 +58,6 @@ export default function MainLayout(props) {
         <main className={styles.main}>{props.children}</main>
       </div>
       <motion.div
-        layoutId="footer"
         transition={{ duration: 1 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
