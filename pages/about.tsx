@@ -9,20 +9,18 @@ import styles from "./styles/about.module.css";
 import { useAppContext } from "../src/providers/AppContext";
 
 import Markdown from "react-markdown";
+import useMorphTransition from "../src/hooks/useMorphTransition";
 
 export default function AboutPage({ aboutMeMarkdown }) {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
-  const [titleExpanded, setTitleExpanded] = React.useState(true);
+  const [titleExpanded, setTitleExpanded] = React.useState(!!appCtx.navTransitionRect);
+
+  const morphRef = useMorphTransition(0.6, () => {
+    setTitleExpanded(false);
+  });
 
   React.useEffect(() => {
-    setTimeout(
-      () => {
-        setTitleExpanded(false);
-      },
-      appCtx.data.introViewed ? 1100 : 0
-    );
-
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
     return () => {
@@ -60,15 +58,15 @@ export default function AboutPage({ aboutMeMarkdown }) {
         />
       </Head>
       {Open && (
-        <div>
-          <motion.div transition={{ duration: 1 }}>
+        <div ref={morphRef}>
+          <div>
             <Navlink
               text="About"
               href="/about"
               enabled={false}
               isExpanded={titleExpanded}
             />
-          </motion.div>
+          </div>
         </div>
       )}
       <motion.div

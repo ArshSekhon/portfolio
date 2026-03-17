@@ -20,15 +20,28 @@ import {
 export default function Work() {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
-  const [titleExpanded, setTitleExpanded] = React.useState(
-    !!appCtx.data.introViewed
-  );
+  const [hasNavTransition] = React.useState(!!appCtx.navTransitionRect);
+  const [titleExpanded, setTitleExpanded] = React.useState(hasNavTransition);
+  const [rightPos, setRightPos] = React.useState(hasNavTransition ? "10vh" : "95vw");
 
   React.useEffect(() => {
-    setTimeout(() => {
-      setTitleExpanded(false);
-    }, 1100);
+    if (hasNavTransition) {
+      // Double rAF ensures browser paints the start position before animating
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setRightPos("95vw");
+        });
+      });
+      // Collapse characters + clear transition after animation
+      const t = setTimeout(() => {
+        setTitleExpanded(false);
+        appCtx.setNavTransitionRect(null);
+      }, 650);
+      return () => clearTimeout(t);
+    }
+  }, []);
 
+  React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
     return () => {
@@ -45,19 +58,19 @@ export default function Work() {
         <title>Work - Arsh Sekhon</title>
       </Head>
       {Open && (
-        <motion.div
+        <div
           style={{
             position: "fixed",
             top: "50vh",
-            right: "95vw",
-            x: "50%",
-            y: "-50%",
+            right: rightPos,
+            transform: "translateX(50%) translateY(-50%)",
+            transition: hasNavTransition ? "right 0.6s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
           }}
         >
-          <motion.div transition={{ duration: 1 }}>
+          <div>
             <Navlink
               fontSize={workFontSize}
-              text="Works"
+              text="Work"
               href="/work"
               enabled={true}
               style={{
@@ -68,8 +81,8 @@ export default function Work() {
               }}
               isExpanded={titleExpanded}
             />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
       <motion.div
         initial={{ y: "10%", opacity: 0 }}

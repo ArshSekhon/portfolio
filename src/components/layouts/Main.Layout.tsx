@@ -1,60 +1,12 @@
 import React from "react";
 import { Text } from "@chakra-ui/react";
 import styles from "./Main.Layout.module.css";
-import { AnimatePresence, motion } from "framer-motion";
-import RainbowButton from "../RainbowButton/RainbowButton";
-import { useAppContext } from "../../providers/AppContext";
-
-const DownloadResumeButton = () => {
-  return (
-    <motion.div
-      initial={{ scale: 1 }}
-      animate={{ scale: 1.15 }}
-      transition={{
-        repeat: Infinity,
-        repeatType: "reverse",
-        duration: 1,
-        ease: "easeInOut",
-      }}
-    >
-      <div title="Resume">
-        <a href="/resume.pdf" target="_blank">
-          <RainbowButton
-            style={{ height: "3em", width: "3em", padding: "0.75em" }}
-          >
-            <span
-              className="material-icons-outlined"
-              style={{ margin: "auto" }}
-            >
-              badge
-            </span>
-          </RainbowButton>
-        </a>
-      </div>
-    </motion.div>
-  );
-};
+import { motion } from "framer-motion";
 
 export default function MainLayout(props) {
-  const appCtx = useAppContext();
   return (
     <div>
       <div className={styles.container}>
-        <AnimatePresence>
-          {appCtx.data.introViewed && (
-            <motion.div
-              style={{ position: "fixed", bottom: "6%", right: "3vw" }}
-              initial={{ opacity: 0, scale: 0.75 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: 1,
-                ease: "easeInOut",
-              }}
-            >
-              <DownloadResumeButton />
-            </motion.div>
-          )}
-        </AnimatePresence>
         <main className={styles.main}>{props.children}</main>
       </div>
       <motion.div

@@ -10,6 +10,7 @@ import { Container, Text, Stack, Box, Button, HStack } from "@chakra-ui/react";
 import styles from "./styles/contact.module.css";
 import ContactForm from "../src/components/ContactForm/ContactForm";
 import { useAppContext } from "../src/providers/AppContext";
+import useMorphTransition from "../src/hooks/useMorphTransition";
 
 const ContactOptions = () => {
   return (
@@ -43,16 +44,14 @@ const ContactOptions = () => {
 export default function ContactPage() {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
-  const [titleExpanded, setTitleExpanded] = React.useState(
-    !!appCtx.data.introViewed
-  );
+  const [titleExpanded, setTitleExpanded] = React.useState(!!appCtx.navTransitionRect);
   const [contactFormOpen, setContactFormOpen] = React.useState(false);
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      setTitleExpanded(false);
-    }, 1100);
+  const morphRef = useMorphTransition(0.6, () => {
+    setTitleExpanded(false);
+  });
 
+  React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
     return () => {
@@ -76,19 +75,13 @@ export default function ContactPage() {
         />
       </Head>
       {Open && (
-        <div>
-          <motion.div
-            initial={appCtx.data.introViewed ? {} : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          >
-            <Navlink
-              text="Contact"
-              href="/contact"
-              enabled={false}
-              isExpanded={titleExpanded}
-            />
-          </motion.div>
+        <div ref={morphRef}>
+          <Navlink
+            text="Contact"
+            href="/contact"
+            enabled={false}
+            isExpanded={titleExpanded}
+          />
         </div>
       )}
       <Container

@@ -143,7 +143,7 @@ const DesktopNav = ({ onNavigate }) => {
         >
           <Navlink
             fontSize={workFontSize}
-            text="Works"
+            text="Work"
             href="/work"
             enabled={true}
             onClick={onWorkClick}
@@ -294,7 +294,7 @@ const MobileNav = ({ onNavigate }) => {
         >
           <Navlink
             fontSize={workFontSize}
-            text="Works"
+            text="Work"
             href="/work"
             enabled={true}
             onClick={onWorkClick}
