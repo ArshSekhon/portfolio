@@ -69,7 +69,7 @@ export default function ContactPage() {
     setTitleExpanded(false);
   });
 
-  // Hide title when navigating away
+  // Hide title when navigating away (non-back-button navigation)
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
@@ -77,6 +77,15 @@ export default function ContactPage() {
       Router.events.off("beforeHistoryChange", routeChangeCallback);
     };
   }, []);
+
+  // Reverse exit animation when back button is clicked
+  React.useEffect(() => {
+    if (appCtx.isExiting) {
+      setTitleExpanded(true);
+      const t = setTimeout(() => appCtx.completeExit(), 600);
+      return () => clearTimeout(t);
+    }
+  }, [appCtx.isExiting]);
 
   // don't remove
   const [width, height] = useWindowSize();
@@ -95,12 +104,17 @@ export default function ContactPage() {
       </Head>
       {Open && (
         <div ref={morphRef}>
-          <Navlink
-            text="Contact"
-            href="/contact"
-            enabled={false}
-            isExpanded={titleExpanded}
-          />
+          <motion.div
+            animate={appCtx.isExiting ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <Navlink
+              text="Contact"
+              href="/contact"
+              enabled={false}
+              isExpanded={titleExpanded}
+            />
+          </motion.div>
         </div>
       )}
       <Container
@@ -112,8 +126,11 @@ export default function ContactPage() {
       >
         <motion.div
           initial={{ y: "10%", opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 1.3, duration: 1 }}
+          animate={appCtx.isExiting ? { y: "10%", opacity: 0 } : { y: 0, opacity: 1 }}
+          transition={{
+            delay: !appCtx.isExiting ? 1.3 : 0,
+            duration: appCtx.isExiting ? 0.4 : 1,
+          }}
         >
           <Stack gap={10} align="center">
             {!contactFormOpen && (

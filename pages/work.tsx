@@ -91,7 +91,7 @@ export default function Work() {
     };
   }, []);
 
-  // Hide title when navigating away (same pattern as About/Contact)
+  // Hide title when navigating away (non-back-button navigation)
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
@@ -99,6 +99,15 @@ export default function Work() {
       Router.events.off("beforeHistoryChange", routeChangeCallback);
     };
   }, []);
+
+  // Reverse exit animation when back button is clicked
+  React.useEffect(() => {
+    if (appCtx.isExiting) {
+      setTitleExpanded(true);
+      const t = setTimeout(() => appCtx.completeExit(), 600);
+      return () => clearTimeout(t);
+    }
+  }, [appCtx.isExiting]);
 
   const workFontSize =
     useBreakpointValue({ base: "2.5rem", md: "3rem" }) || "2.5rem";
@@ -118,7 +127,10 @@ export default function Work() {
             transform: "translateX(50%) translateY(-50%)",
           }}
         >
-          <div>
+          <motion.div
+            animate={appCtx.isExiting ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
             <Navlink
               fontSize={workFontSize}
               text="Work"
@@ -132,14 +144,16 @@ export default function Work() {
               }}
               isExpanded={titleExpanded}
             />
-          </div>
+          </motion.div>
         </div>
       )}
       <motion.div
         initial={{ y: "10%", opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: "10%", opacity: 0 }}
-        transition={{ delay: appCtx.data.introViewed ? 1.3 : 0, duration: 1 }}
+        animate={appCtx.isExiting ? { y: "10%", opacity: 0 } : { y: 0, opacity: 1 }}
+        transition={{
+          delay: !appCtx.isExiting && appCtx.data.introViewed ? 1.3 : 0,
+          duration: appCtx.isExiting ? 0.4 : 1,
+        }}
       >
         <Container
           maxW="60vw"

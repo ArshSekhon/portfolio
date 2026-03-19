@@ -42,7 +42,7 @@ export default function AboutPage({ aboutMeMarkdown }) {
     setTitleExpanded(false);
   });
 
-  // Hide the title when navigating away to prevent visual flash
+  // Hide the title when navigating away (non-back-button navigation)
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
@@ -50,6 +50,16 @@ export default function AboutPage({ aboutMeMarkdown }) {
       Router.events.off("beforeHistoryChange", routeChangeCallback);
     };
   }, []);
+
+  // Reverse exit animation when back button is clicked
+  React.useEffect(() => {
+    if (appCtx.isExiting) {
+      setTitleExpanded(true); // Re-expand characters
+      // Wait for exit animations, then complete
+      const t = setTimeout(() => appCtx.completeExit(), 600);
+      return () => clearTimeout(t);
+    }
+  }, [appCtx.isExiting]);
 
   // don't remove
   const [width, height] = useWindowSize();
@@ -103,21 +113,26 @@ export default function AboutPage({ aboutMeMarkdown }) {
       </Head>
       {Open && (
         <div ref={morphRef}>
-          <div>
+          <motion.div
+            animate={appCtx.isExiting ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
             <Navlink
               text="About"
               href="/about"
               enabled={false}
               isExpanded={titleExpanded}
             />
-          </div>
+          </motion.div>
         </div>
       )}
       <motion.div
         initial={{ y: "10%", opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: "10%", opacity: 0 }}
-        transition={{ delay: appCtx.data.introViewed ? 1.3 : 0, duration: 1 }}
+        animate={appCtx.isExiting ? { y: "10%", opacity: 0 } : { y: 0, opacity: 1 }}
+        transition={{
+          delay: !appCtx.isExiting && appCtx.data.introViewed ? 1.3 : 0,
+          duration: appCtx.isExiting ? 0.4 : 1,
+        }}
       >
         <Container
           maxW="680px"

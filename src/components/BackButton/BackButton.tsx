@@ -2,28 +2,32 @@ import React from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import styles from "./BackButton.module.css";
+import { useAppContext } from "../../providers/AppContext";
 
 /**
- * BackButton — fixed bottom-left back navigation with brutalist design.
- *
- * Default: dark grey circle with sharp left-facing arrow.
- * Hover: circle shrinks + turns black, "BACK" label slides out from behind.
- * Click: navigates to "/" (home).
- * Fades in after a delay to let page entrance animations complete first.
+ * BackButton — triggers reverse exit animations, then navigates home.
+ * Pages watch appCtx.isExiting and play reverse animations,
+ * then call appCtx.completeExit() which triggers the actual navigation.
  */
 export default function BackButton() {
   const router = useRouter();
+  const appCtx = useAppContext();
+
+  const handleClick = () => {
+    appCtx.triggerExit(() => {
+      router.push("/");
+    });
+  };
 
   return (
     <motion.div
       className={styles.wrapper}
-      onClick={() => router.push("/")}
+      onClick={handleClick}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 2, duration: 0.6, ease: "easeOut" }}
+      animate={{ opacity: appCtx.isExiting ? 0 : 1 }}
+      transition={{ delay: appCtx.isExiting ? 0 : 2, duration: 0.3, ease: "easeOut" }}
     >
       <div className={styles.circle}>
-        {/* Sharp, geometric left arrow — no rounded caps */}
         <svg className={styles.arrow} viewBox="0 0 24 24">
           <line x1="19" y1="12" x2="5" y2="12" />
           <polyline points="11,5 5,12 11,19" />
