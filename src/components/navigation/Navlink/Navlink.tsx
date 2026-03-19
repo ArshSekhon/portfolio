@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useAnimation, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import styles from "./Navlink.module.css";
 import { useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
 import { useAppContext } from "../../../providers/AppContext";
@@ -58,7 +58,6 @@ export default function Navlink({
   const router = useRouter();
   const appCtx = useAppContext();
   const wrapperRef = React.useRef(null); // Used to capture bounding rect before navigation for morph
-  const strikeoutAnimationControl = useAnimation();
   const [isClicked, setIsClicked] = React.useState(false);
   const [isScreenLargerThan768] = useMediaQuery(["(min-width: 768px)"]);
   // Hydration fix: delay enabling CSS transitions to avoid flash on SSR hydration
@@ -85,21 +84,6 @@ export default function Navlink({
   // render expanded; when morph completes and isExpanded becomes false, they animate to normal
   if (isExpanded) normalCharSpacing = expandedCharSpacing;
 
-  const animateClearStrikeout = () => {
-    if (!isClicked)
-      strikeoutAnimationControl.start({
-        left: "100%",
-        transition: { duration: 0.3, ease: "easeOut" },
-      });
-  };
-
-  const animateStrikeOut = () => {
-    if (!isClicked)
-      strikeoutAnimationControl.start({
-        left: "0%",
-        transition: { duration: 0.3, ease: "easeIn" },
-      });
-  };
 
   const variants = {
     expanded: { margin: `0 ${expandedCharSpacing}` },
@@ -161,8 +145,6 @@ export default function Navlink({
         (enabled ? "" : ` ${styles.disabled}`)
       }
       onClick={onClick}
-      onMouseEnter={enabled ? animateClearStrikeout : () => {}}
-      onMouseLeave={enabled ? animateStrikeOut : () => {}}
     >
       <a
         className={styles.horizontalStrikeoutLink}
@@ -191,10 +173,9 @@ export default function Navlink({
           {"\u00A0"}
         </span>
       </a>
-      <motion.div
-        animate={strikeoutAnimationControl}
-        className={styles.horizontalStrikeout}
-      ></motion.div>
+      <div
+        className={`${styles.horizontalStrikeout} ${isClicked ? styles.strikeoutCleared : ""}`}
+      ></div>
     </div>
   );
 }

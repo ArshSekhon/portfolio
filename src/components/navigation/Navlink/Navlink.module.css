@@ -47,4 +47,15 @@
   height: 3px;
   width: 100%;
   background: black;
+  transition: left 0.3s ease;
+}
+
+/* Hover clears strikeout — works on desktop (hover) and mobile (sticky tap) */
+.horizontalStrikeoutLinkWrapper:not(.disabled):hover .horizontalStrikeout {
+  left: 100%;
+}
+
+/* When clicked (navigating), keep strikeout cleared */
+.strikeoutCleared {
+  left: 100% !important;
 }
