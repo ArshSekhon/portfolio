@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, animate as fmAnimate } from "framer-motion";
 import styles from "./styles/work.module.css";
 import Navlink from "../src/components/navigation/Navlink/Navlink";
 import { useAppContext } from "../src/providers/AppContext";
@@ -45,23 +45,50 @@ export default function Work() {
   // Capture once at mount — don't react to later changes
   const [hasNavTransition] = React.useState(!!appCtx.navTransitionRect);
   const [titleExpanded, setTitleExpanded] = React.useState(hasNavTransition);
-  const [rightPos, setRightPos] = React.useState(hasNavTransition ? "10vh" : "95vw");
-  const [morphDone, setMorphDone] = React.useState(!hasNavTransition);
+  const workTitleRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    if (hasNavTransition) {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setRightPos("95vw");
-        });
-      });
-      const t = setTimeout(() => {
-        setMorphDone(true); // Disable CSS transition so exit doesn't animate
+  // GPU-accelerated morph: render at final position, then use translateX to
+  // offset to source position and animate back to 0
+  React.useLayoutEffect(() => {
+    if (!hasNavTransition || !workTitleRef.current) return;
+
+    const el = workTitleRef.current;
+    const targetRect = el.getBoundingClientRect();
+    const sourceRect = appCtx.navTransitionRect;
+    if (!sourceRect) return;
+
+    // Use center points instead of left edges — immune to width differences
+    // caused by character expansion animation and rotated bounding box distortion
+    const sourceCenterX = sourceRect.left + sourceRect.width / 2;
+    const targetCenterX = targetRect.left + targetRect.width / 2;
+    const deltaX = sourceCenterX - targetCenterX;
+
+    // Start at source position, hidden until positioned
+    el.style.visibility = "hidden";
+    el.style.transform = `translateX(calc(50% + ${deltaX}px)) translateY(-50%)`;
+
+    // Force reflow so browser registers the start position
+    el.getBoundingClientRect();
+
+    // Reveal and animate back to natural position
+    el.style.visibility = "visible";
+    const controls = fmAnimate(deltaX, 0, {
+      duration: 0.6,
+      ease: [0.4, 0, 0.2, 1],
+      onUpdate: (v) => {
+        el.style.transform = `translateX(calc(50% + ${v}px)) translateY(-50%)`;
+      },
+      onComplete: () => {
+        el.style.transform = "translateX(50%) translateY(-50%)";
         setTitleExpanded(false);
         appCtx.setNavTransitionRect(null);
-      }, 650);
-      return () => clearTimeout(t);
-    }
+      },
+    });
+
+    return () => {
+      controls.stop();
+      el.style.transform = "translateX(50%) translateY(-50%)";
+    };
   }, []);
 
   // Hide title when navigating away (same pattern as About/Contact)
@@ -83,12 +110,12 @@ export default function Work() {
       </Head>
       {Open && (
         <div
+          ref={workTitleRef}
           style={{
             position: "fixed",
             top: "50vh",
-            right: rightPos,
+            right: "95vw",
             transform: "translateX(50%) translateY(-50%)",
-            transition: hasNavTransition && !morphDone ? "right 0.6s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
           }}
         >
           <div>

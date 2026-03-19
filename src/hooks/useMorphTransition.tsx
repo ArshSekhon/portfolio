@@ -63,6 +63,9 @@ export default function useMorphTransition(duration = 0.6, onComplete?: () => vo
 
     const t0 = performance.now();
 
+    // Hide until positioned to prevent flash at natural position
+    el.style.visibility = "hidden";
+
     // Reserve space in the document flow so layout doesn't jump when we fix-position the element
     el.style.height = el.offsetHeight + "px";
 
@@ -74,7 +77,8 @@ export default function useMorphTransition(duration = 0.6, onComplete?: () => vo
     el.style.zIndex = "100";
     el.style.margin = "0";
 
-    el.getBoundingClientRect(); // Force reflow so the browser registers the start position before animating
+    el.getBoundingClientRect(); // Force reflow
+    el.style.visibility = "visible";
 
     // Animate only the vertical position (horizontal is already centered via left:50% + translateX(-50%))
     const controls = animate(sourceRect.top, targetRect.top, {
