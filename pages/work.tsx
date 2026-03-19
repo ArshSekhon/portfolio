@@ -45,19 +45,18 @@ export default function Work() {
   // Capture once at mount — don't react to later changes
   const [hasNavTransition] = React.useState(!!appCtx.navTransitionRect);
   const [titleExpanded, setTitleExpanded] = React.useState(hasNavTransition);
-  // Start at Home's position if arriving via nav, otherwise at final position
   const [rightPos, setRightPos] = React.useState(hasNavTransition ? "10vh" : "95vw");
+  const [morphDone, setMorphDone] = React.useState(!hasNavTransition);
 
   React.useEffect(() => {
     if (hasNavTransition) {
-      // Double rAF ensures browser paints the start position before animating
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          setRightPos("95vw"); // Triggers CSS transition to final position
+          setRightPos("95vw");
         });
       });
-      // Collapse characters + clear transition rect after the slide completes
       const t = setTimeout(() => {
+        setMorphDone(true); // Disable CSS transition so exit doesn't animate
         setTitleExpanded(false);
         appCtx.setNavTransitionRect(null);
       }, 650);
@@ -89,7 +88,7 @@ export default function Work() {
             top: "50vh",
             right: rightPos,
             transform: "translateX(50%) translateY(-50%)",
-            transition: hasNavTransition ? "right 0.6s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
+            transition: hasNavTransition && !morphDone ? "right 0.6s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
           }}
         >
           <div>
@@ -97,7 +96,7 @@ export default function Work() {
               fontSize={workFontSize}
               text="Work"
               href="/work"
-              enabled={true}
+              enabled={false}
               style={{
                 transform: "rotate(-90deg)",
                 position: "relative",

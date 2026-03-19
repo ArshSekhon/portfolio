@@ -24,62 +24,52 @@ const DesktopNav = ({ onNavigate }) => {
   const onContactClick = () => {
     if (onNavigate) onNavigate();
     contactContainerAnimationControl.start({
-      position: "fixed",
       x: "-50%",
       left: "50vw",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     aboutContainerAnimationControl.start({
-      position: "fixed",
       left: "0vw",
       opacity: 0,
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     workContainerAnimationControl.start({
-      position: "fixed",
-      right: "-5vw",
       opacity: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
+      transition: { duration: 0.3, ease: "easeOut" },
     });
   };
 
   const onAboutClick = () => {
     if (onNavigate) onNavigate();
     aboutContainerAnimationControl.start({
-      position: "fixed",
       x: "-50%",
       left: "50vw",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     contactContainerAnimationControl.start({
-      position: "fixed",
       opacity: 0,
       left: "100vw",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     workContainerAnimationControl.start({
-      position: "fixed",
-      right: "-5vw",
       opacity: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
+      transition: { duration: 0.3, ease: "easeOut" },
     });
   };
 
   const onWorkClick = () => {
     if (onNavigate) onNavigate();
     aboutContainerAnimationControl.start({
-      position: "fixed",
       opacity: 0,
       y: "100%",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     contactContainerAnimationControl.start({
-      position: "fixed",
       opacity: 0,
       y: "100%",
       transition: { duration: 0.4, ease: "easeOut" },
@@ -182,60 +172,50 @@ const MobileNav = ({ onNavigate }) => {
   const onContactClick = () => {
     if (onNavigate) onNavigate();
     contactContainerAnimationControl.start({
-      position: "fixed",
       x: "-50%",
       left: "50vw",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     aboutContainerAnimationControl.start({
-      position: "fixed",
       y: "100%",
       opacity: 0,
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     workContainerAnimationControl.start({
-      position: "fixed",
-      right: "-5vw",
       opacity: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
+      transition: { duration: 0.3, ease: "easeOut" },
     });
   };
 
   const onAboutClick = () => {
     if (onNavigate) onNavigate();
     aboutContainerAnimationControl.start({
-      position: "fixed",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     contactContainerAnimationControl.start({
-      position: "fixed",
       opacity: 0,
       y: "-100%",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     workContainerAnimationControl.start({
-      position: "fixed",
-      right: "-5vw",
       opacity: 0,
-      transition: { duration: 0.4, ease: "easeOut" },
+      transition: { duration: 0.3, ease: "easeOut" },
     });
   };
 
   const onWorkClick = () => {
     if (onNavigate) onNavigate();
     contactContainerAnimationControl.start({
-      position: "fixed",
       opacity: 0,
       y: "-100%",
       transition: { duration: 0.4, ease: "easeOut" },
     });
 
     aboutContainerAnimationControl.start({
-      position: "fixed",
       y: "100%",
       opacity: 0,
       transition: { duration: 0.4, ease: "easeOut" },
