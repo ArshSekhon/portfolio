@@ -11,15 +11,38 @@ import { useAppContext } from "../src/providers/AppContext";
 import Markdown from "react-markdown";
 import useMorphTransition from "../src/hooks/useMorphTransition";
 
+/**
+ * AboutPage — entry animation integrates with the morph transition system.
+ *
+ * MORPH INTEGRATION:
+ * - titleExpanded starts true if navTransitionRect exists (arrived via Home nav click),
+ *   so the title Navlink renders with expanded character spacing matching the Home state.
+ * - useMorphTransition animates the title container from the captured source position
+ *   to its natural position, then calls onComplete -> setTitleExpanded(false) to collapse
+ *   the characters back to normal spacing.
+ * - On direct navigation (no navTransitionRect), titleExpanded starts false = no morph.
+ *
+ * EXIT PATTERN:
+ * - `Open` state controls whether the title is rendered.
+ * - On beforeHistoryChange (user navigates away), Open is set to false,
+ *   removing the title so it doesn't flash during page transition.
+ *
+ * CONTENT ENTRANCE:
+ * - The body content fades in with a delay of 1.3s if introViewed is true
+ *   (gives morph animation time to complete), or 0s on first visit.
+ */
 export default function AboutPage({ aboutMeMarkdown }) {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
+  // Start expanded if we arrived via nav click (morph transition in progress)
   const [titleExpanded, setTitleExpanded] = React.useState(!!appCtx.navTransitionRect);
 
+  // Attach morph ref to the title container; onComplete collapses character spacing
   const morphRef = useMorphTransition(0.6, () => {
     setTitleExpanded(false);
   });
 
+  // Hide the title when navigating away to prevent visual flash
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);

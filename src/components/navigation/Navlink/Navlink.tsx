@@ -5,6 +5,43 @@ import styles from "./Navlink.module.css";
 import { useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
 import { useAppContext } from "../../../providers/AppContext";
 
+/**
+ * Navlink — animated navigation link with character-level motion.
+ *
+ * ANIMATION SYSTEM:
+ * - Each character is rendered as a separate <motion.span> with framer-motion variants.
+ * - "normal" variant: characters at normalCharSpacing (10px desktop, 5px mobile)
+ * - "expanded" variant: characters at expandedCharSpacing (30px desktop, 15px mobile)
+ * - When isClicked toggles, characters animate between normal <-> expanded spacing.
+ * - When isExpanded prop is true (used on destination pages), normalCharSpacing is
+ *   overridden to expandedCharSpacing, so characters start expanded then collapse
+ *   when the morph completes and isExpanded becomes false.
+ *
+ * STRIKEOUT HOVER ANIMATION:
+ * - A <motion.div> bar slides in from left on hover (animateStrikeOut)
+ *   and slides out on mouse leave (animateClearStrikeout).
+ * - Disabled once the link is clicked (isClicked guard).
+ *
+ * HYDRATION FIX:
+ * - `hydrated` state starts false, set to true after 50ms.
+ * - transition.duration is 0 when !hydrated to prevent the characters from visibly
+ *   animating on initial render / hydration (SSR mismatch avoidance).
+ *
+ * NAVIGATION DELAY FLOW (onClick):
+ * 1. setIsClicked(true) -> characters expand (normal -> expanded variant)
+ * 2. customOnClick fires -> parent (Home.tsx) starts exit animations
+ *    (other links fade, logo/banner fade)
+ * 3. After navigationDelay (default 500ms):
+ *    a. Captures this element's bounding rect into appCtx.navTransitionRect
+ *       (used by useMorphTransition on the destination page)
+ *    b. Calls router.push(href) to navigate
+ *
+ * @param text - Link display text (split into individual characters)
+ * @param href - Navigation target route
+ * @param enabled - Whether clicking triggers navigation
+ * @param isExpanded - Force expanded character spacing (used on destination page titles)
+ * @param navigationDelay - Ms to wait before navigating (default 500), allows exit animations
+ */
 export default function Navlink({
   text,
   href,
@@ -20,10 +57,11 @@ export default function Navlink({
 }) {
   const router = useRouter();
   const appCtx = useAppContext();
-  const wrapperRef = React.useRef(null);
+  const wrapperRef = React.useRef(null); // Used to capture bounding rect before navigation for morph
   const strikeoutAnimationControl = useAnimation();
   const [isClicked, setIsClicked] = React.useState(false);
   const [isScreenLargerThan768] = useMediaQuery(["(min-width: 768px)"]);
+  // Hydration fix: delay enabling CSS transitions to avoid flash on SSR hydration
   const [hydrated, setHydrated] = React.useState(false);
   React.useEffect(() => {
     const t = setTimeout(() => setHydrated(true), 50);
@@ -43,6 +81,8 @@ export default function Navlink({
     fontSize = useBreakpointValue({ base: "2rem", md: "2rem", sm: "2rem" });
   }
 
+  // When isExpanded is true (destination page title), override normal spacing so characters
+  // render expanded; when morph completes and isExpanded becomes false, they animate to normal
   if (isExpanded) normalCharSpacing = expandedCharSpacing;
 
   const animateClearStrikeout = () => {
@@ -90,9 +130,10 @@ export default function Navlink({
         }
       }, 100);
 
+      // Wait for exit animations to finish, then capture position and navigate
       setTimeout(() => {
         clearInterval(interval);
-        // Capture bounding rect just before navigation for morph effect
+        // Capture bounding rect just before navigation — stored in AppContext for useMorphTransition
         if (wrapperRef.current) {
           const rect = wrapperRef.current.getBoundingClientRect();
           const captured = {
@@ -140,7 +181,7 @@ export default function Navlink({
             className={styles.horizontalStrikeoutLinkTextCharacter}
             animate={isClicked ? "expanded" : "normal"}
             variants={variants}
-            transition={{ duration: hydrated ? 0.5 : 0 }}
+            transition={{ duration: hydrated ? 0.5 : 0 }} // 0 duration pre-hydration prevents flash
             style={{ margin: `0 ${normalCharSpacing}` }}
           >
             {ch}

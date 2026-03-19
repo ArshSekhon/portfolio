@@ -13,6 +13,15 @@ Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
+/**
+ * App root — provider structure (outer to inner):
+ * 1. AppContextProvider: holds introViewed state and navTransitionRect for morph animations
+ * 2. ChakraProvider: UI component library theme
+ * 3. MainLayout: shared page shell (container + footer)
+ * 4. Component: the active page
+ *
+ * NProgress is configured globally for route-change loading indicators.
+ */
 function App({ Component, pageProps }: AppProps) {
   return (
     <AppContextProvider>

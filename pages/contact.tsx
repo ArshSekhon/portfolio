@@ -41,16 +41,35 @@ const ContactOptions = () => {
   );
 };
 
+/**
+ * ContactPage — same morph transition pattern as AboutPage.
+ *
+ * MORPH INTEGRATION:
+ * - titleExpanded starts true if navTransitionRect exists (arrived via Home nav click).
+ * - useMorphTransition animates the title from the captured Home position to its
+ *   final position, then collapses character spacing via setTitleExpanded(false).
+ *
+ * EXIT PATTERN:
+ * - beforeHistoryChange sets Open=false to hide the title during route transitions.
+ *
+ * CONTENT ENTRANCE:
+ * - Body content always fades in with 1.3s delay (unlike About which checks introViewed).
+ *
+ * See AboutPage and useMorphTransition for detailed documentation of the pattern.
+ */
 export default function ContactPage() {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
+  // Start expanded if we arrived via nav click (morph in progress)
   const [titleExpanded, setTitleExpanded] = React.useState(!!appCtx.navTransitionRect);
   const [contactFormOpen, setContactFormOpen] = React.useState(false);
 
+  // Attach morph ref; onComplete collapses expanded characters
   const morphRef = useMorphTransition(0.6, () => {
     setTitleExpanded(false);
   });
 
+  // Hide title when navigating away
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);

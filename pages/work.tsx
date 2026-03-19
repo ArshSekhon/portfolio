@@ -17,11 +17,35 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
+/**
+ * Work page — uses a CSS transition approach for the morph, unlike About/Contact
+ * which use useMorphTransition for a vertical FLIP animation.
+ *
+ * WHY DIFFERENT:
+ * The Work link on the Home page is rotated -90deg and positioned on the right edge.
+ * A vertical morph doesn't make sense here — instead, the title slides horizontally
+ * from its Home position (right:10vh) to its final position (right:95vw) using a
+ * CSS `transition` on the `right` property.
+ *
+ * MORPH FLOW:
+ * 1. hasNavTransition captures whether navTransitionRect existed at mount time
+ * 2. If true: rightPos starts at "10vh" (matching Home position), titleExpanded=true
+ * 3. Double requestAnimationFrame trick ensures the browser paints the start position
+ *    before we set rightPos to "95vw", triggering the CSS transition
+ * 4. After 650ms: titleExpanded=false collapses characters, navTransitionRect cleared
+ *
+ * DOUBLE-rAF TRICK:
+ * A single rAF can batch with React's commit phase. Two nested rAFs guarantee the
+ * browser has painted at least one frame with the initial position, so the CSS
+ * transition actually animates instead of snapping.
+ */
 export default function Work() {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
+  // Capture once at mount — don't react to later changes
   const [hasNavTransition] = React.useState(!!appCtx.navTransitionRect);
   const [titleExpanded, setTitleExpanded] = React.useState(hasNavTransition);
+  // Start at Home's position if arriving via nav, otherwise at final position
   const [rightPos, setRightPos] = React.useState(hasNavTransition ? "10vh" : "95vw");
 
   React.useEffect(() => {
@@ -29,10 +53,10 @@ export default function Work() {
       // Double rAF ensures browser paints the start position before animating
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          setRightPos("95vw");
+          setRightPos("95vw"); // Triggers CSS transition to final position
         });
       });
-      // Collapse characters + clear transition after animation
+      // Collapse characters + clear transition rect after the slide completes
       const t = setTimeout(() => {
         setTitleExpanded(false);
         appCtx.setNavTransitionRect(null);
@@ -41,6 +65,7 @@ export default function Work() {
     }
   }, []);
 
+  // Hide title when navigating away (same pattern as About/Contact)
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);

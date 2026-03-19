@@ -7,6 +7,15 @@ import Navlink from "../navigation/Navlink/Navlink";
 import useWindowSize from "../../hooks/useWindowSize";
 import { useBreakpointValue } from "@chakra-ui/react";
 
+/**
+ * DesktopNav — horizontal layout with About/Contact at bottom, Work rotated on the right.
+ *
+ * Each link has its own useAnimation control. When a link is clicked:
+ * 1. onNavigate() fires first (fades logo + name banner in parent)
+ * 2. The clicked link animates to center (fixed, left:50vw, x:-50%)
+ * 3. The other links fade out in different directions
+ * After the Navlink's navigationDelay (500ms), the rect is captured and route pushed.
+ */
 const DesktopNav = ({ onNavigate }) => {
   const contactContainerAnimationControl = useAnimation();
   const aboutContainerAnimationControl = useAnimation();
@@ -160,6 +169,11 @@ const DesktopNav = ({ onNavigate }) => {
   );
 };
 
+/**
+ * MobileNav — vertical layout with Contact at top, About at bottom, Work on the right.
+ * Same animation pattern as DesktopNav but with mobile-appropriate directions
+ * (vertical slides instead of horizontal for non-clicked links).
+ */
 const MobileNav = ({ onNavigate }) => {
   const contactContainerAnimationControl = useAnimation();
   const aboutContainerAnimationControl = useAnimation();
@@ -311,12 +325,29 @@ const MobileNav = ({ onNavigate }) => {
   );
 };
 
+/**
+ * Home — main landing page component with coordinated exit animations.
+ *
+ * ANIMATION SEQUENCE when a nav link is clicked:
+ * 1. Navlink.onClick fires -> isClicked=true -> characters expand (letter-spacing widens)
+ * 2. customOnClick (e.g. onAboutClick) fires:
+ *    a. onNavigate() -> logo and name banner fade up and out
+ *    b. Clicked link centers on screen (position:fixed, left:50vw)
+ *    c. Other links fade out in various directions
+ * 3. After Navlink's navigationDelay (500ms default):
+ *    a. Navlink captures its bounding rect -> appCtx.navTransitionRect
+ *    b. router.push(href) triggers Next.js navigation
+ * 4. Destination page renders, useMorphTransition reads the stored rect and
+ *    animates the title from the captured position to its final position.
+ */
 export default function Home() {
   const [width, height] = useWindowSize();
 
+  // Controls for fading out non-nav elements during the exit sequence
   const nameBannerAnimationControl = useAnimation();
   const alphaLogoAnimationControl = useAnimation();
 
+  /** Called by both DesktopNav and MobileNav when any link is clicked. Fades out logo + banner. */
   const onNavigate = () => {
     alphaLogoAnimationControl.start({
       y: "-10%",
@@ -336,7 +367,9 @@ export default function Home() {
       <header>
         <nav>
           <div>
-            {(width && width > 768) && <DesktopNav onNavigate={onNavigate} />}
+            {/* Render DesktopNav or MobileNav based on window width (not CSS media query,
+              because the animation controls differ between layouts) */}
+          {(width && width > 768) && <DesktopNav onNavigate={onNavigate} />}
           </div>
           <div>{width && width <= 768 && <MobileNav onNavigate={onNavigate} />}</div>
         </nav>
