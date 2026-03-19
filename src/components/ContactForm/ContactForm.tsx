@@ -304,14 +304,14 @@ export default function ContactForm({ closeForm }) {
         <HStack w="100%" justify="center" gap={5}>
           <Button
             onClick={onBackClick}
-            background="#fff"
-            border="2px solid #000"
             size="lg"
-            fontWeight="400"
-            borderRadius="0"
-            _focus={{
-              boxShadow:
-                "0 0 1px 2px rgba(0, 0, 0, .50), 0 1px 1px rgba(0, 0, 0, .15)",
+            css={{
+              background: "#fff",
+              border: "2px solid #000",
+              fontWeight: "400",
+              borderRadius: "0",
+              cursor: "pointer",
+              "&:hover": { background: "#f5f5f5" },
             }}
           >
             {stepIndex === 3 ? "TAKE ME HOME" : "BACK"}
@@ -323,15 +323,14 @@ export default function ContactForm({ closeForm }) {
                 (stepIndex == 2 && (!captchaHumanKey || sendingMessage))
               }
               onClick={onNextClick}
-              colorPalette="teal"
               size="lg"
-              background="black"
-              _hover={{ background: "blackAlpha.900" }}
-              fontWeight="400"
-              borderRadius="0"
-              _focus={{
-                boxShadow:
-                  "0 0 1px 2px rgba(0, 0, 0, .50), 0 1px 1px rgba(0, 0, 0, .15)",
+              css={{
+                background: "#000",
+                color: "#fff",
+                fontWeight: "400",
+                borderRadius: "0",
+                cursor: "pointer",
+                "&:hover": { background: "#222" },
               }}
             >
               {stepIndex === 2 ? "SEND" : "NEXT"}

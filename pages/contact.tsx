@@ -120,25 +120,19 @@ export default function ContactPage() {
               <>
                 <h1 className={styles.sayHello}>Say Hello!</h1>
                 <Button
-                  transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-                  border="2px"
-                  fontSize="1rem"
-                  borderRadius="2px"
-                  padding="1em 5em"
-                  bg="#000"
-                  borderColor="#000"
-                  color="#fff"
-                  _hover={{ bg: "#fff", color: "#000" }}
-                  _active={{
-                    borderColor: "#000",
+                  css={{
+                    transition: "all 0.2s cubic-bezier(.08,.52,.52,1)",
+                    border: "2px solid #000",
+                    fontSize: "1rem",
+                    borderRadius: "2px",
+                    padding: "1em 5em",
+                    background: "#000",
+                    color: "#fff",
+                    cursor: "pointer",
+                    "&:hover": { background: "#fff", color: "#000" },
                   }}
                   onClick={() => {
                     setContactFormOpen(true);
-                  }}
-                  maxW="none"
-                  _focus={{
-                    boxShadow:
-                      "0 0 1px 2px rgba(0, 0, 0, .50), 0 1px 1px rgba(0, 0, 0, .15)",
                   }}
                 >
                   SEND MESSAGE

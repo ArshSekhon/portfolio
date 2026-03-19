@@ -144,22 +144,17 @@ export default function Work() {
                 <div>
                   <a href="https://github.com/arshsekhon" target="_blank">
                     <Button
-                      transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-                      border="2px"
-                      fontSize="1rem"
-                      borderRadius="2px"
-                      width="100%"
-                      maxWidth="15em"
-                      bg="#000"
-                      borderColor="#000"
-                      color="#fff"
-                      _hover={{ bg: "#fff", color: "#000" }}
-                      _active={{
-                        borderColor: "#000",
-                      }}
-                      _focus={{
-                        boxShadow:
-                          "0 0 1px 2px rgba(0, 0, 0, .50), 0 1px 1px rgba(0, 0, 0, .15)",
+                      css={{
+                        transition: "all 0.2s cubic-bezier(.08,.52,.52,1)",
+                        border: "2px solid #000",
+                        fontSize: "1rem",
+                        borderRadius: "2px",
+                        width: "100%",
+                        maxWidth: "15em",
+                        background: "#000",
+                        color: "#fff",
+                        cursor: "pointer",
+                        "&:hover": { background: "#fff", color: "#000" },
                       }}
                     >
                       Explore Projects
@@ -186,22 +181,17 @@ export default function Work() {
                     target="_blank"
                   >
                     <Button
-                      transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-                      border="2px"
-                      fontSize="1rem"
-                      borderRadius="2px"
-                      width="100%"
-                      maxWidth="15em"
-                      bg="#000"
-                      borderColor="#000"
-                      color="#fff"
-                      _hover={{ bg: "#fff", color: "#000" }}
-                      _active={{
-                        borderColor: "#000",
-                      }}
-                      _focus={{
-                        boxShadow:
-                          "0 0 1px 2px rgba(0, 0, 0, .50), 0 1px 1px rgba(0, 0, 0, .15)",
+                      css={{
+                        transition: "all 0.2s cubic-bezier(.08,.52,.52,1)",
+                        border: "2px solid #000",
+                        fontSize: "1rem",
+                        borderRadius: "2px",
+                        width: "100%",
+                        maxWidth: "15em",
+                        background: "#000",
+                        color: "#fff",
+                        cursor: "pointer",
+                        "&:hover": { background: "#fff", color: "#000" },
                       }}
                     >
                       Explore Designs
