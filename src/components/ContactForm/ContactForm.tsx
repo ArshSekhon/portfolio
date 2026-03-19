@@ -33,6 +33,7 @@ export default function ContactForm({ closeForm }) {
   const [error, setError] = React.useState("");
   const [errorStep, setErrorStep] = React.useState(0);
   const [captchaHumanKey, setCaptchaHumanKey] = React.useState();
+  const [touched, setTouched] = React.useState(false);
 
   const sendMessage = async () => {
     const payload = { name, email, message, captchaHumanKey };
@@ -72,6 +73,7 @@ export default function ContactForm({ closeForm }) {
   };
 
   const ErrorBanner = () => {
+    if (!touched) return null;
     return <div style={{ textAlign: "left", color: "maroon" }}>{error}</div>;
   };
 
@@ -132,7 +134,10 @@ export default function ContactForm({ closeForm }) {
   };
 
   const onNextClick = async () => {
+    setTouched(true);
+    if (errorStep === stepIndex) return;
     if (stepIndex == 2) await sendMessage();
+    setTouched(false);
     setStepIndex((i) => i + 1);
   };
 
@@ -140,18 +145,19 @@ export default function ContactForm({ closeForm }) {
     <div id="compose-message">
       <form id="message-form" onSubmit={(e) => e.preventDefault()}>
         <div id="questions-wrapper" style={{ marginBottom: "5vh" }}>
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             {stepIndex === 0 && (
               <motion.div
-                initial={{ opacity: 0, y: "5vh", display: "none" }}
-                animate={{ opacity: 1, y: "0vh", display: "block" }}
-                exit={{ opacity: 0, display: "none" }}
+                key="step-0"
+                initial={{ opacity: 0, y: "5vh" }}
+                animate={{ opacity: 1, y: "0vh" }}
+                exit={{ opacity: 0 }}
                 transition={{
-                  duration: 1,
+                  duration: 0.4,
                   ease: "easeInOut",
                 }}
               >
-                <Stack gap={5}>
+                <Stack gap={8}>
                   <label htmlFor="name-input">
                     <Heading
                       textAlign="left"
@@ -174,6 +180,7 @@ export default function ContactForm({ closeForm }) {
                     _focus={{ borderColor: "#c2c2c2" }}
                     value={name}
                     onChange={(e) => {
+                      setTouched(true);
                       setName(e.target.value);
                     }}
                   />
@@ -181,20 +188,19 @@ export default function ContactForm({ closeForm }) {
                 </Stack>
               </motion.div>
             )}
-          </AnimatePresence>
 
-          <AnimatePresence>
             {stepIndex === 1 && (
               <motion.div
-                initial={{ opacity: 0, y: "5vh", display: "none" }}
-                animate={{ opacity: 1, y: "0vh", display: "block" }}
-                exit={{ opacity: 0, display: "none" }}
+                key="step-1"
+                initial={{ opacity: 0, y: "5vh" }}
+                animate={{ opacity: 1, y: "0vh" }}
+                exit={{ opacity: 0 }}
                 transition={{
-                  duration: 1,
+                  duration: 0.4,
                   ease: "easeInOut",
                 }}
               >
-                <Stack gap={5}>
+                <Stack gap={8}>
                   <label htmlFor="email-input">
                     <Heading
                       textAlign="left"
@@ -217,6 +223,7 @@ export default function ContactForm({ closeForm }) {
                     _focus={{ borderColor: "#c2c2c2" }}
                     value={email}
                     onChange={(e) => {
+                      setTouched(true);
                       setEmail(e.target.value);
                     }}
                   />
@@ -224,89 +231,107 @@ export default function ContactForm({ closeForm }) {
                 </Stack>
               </motion.div>
             )}
-          </AnimatePresence>
 
-          {stepIndex === 2 && (
-            <motion.div
-              initial={{ opacity: 0, y: "5vh" }}
-              animate={{ opacity: 1, y: "0vh" }}
-              exit={{ opacity: 0, display: "none" }}
-              transition={{
-                duration: 1,
-                ease: "easeInOut",
-              }}
-            >
-              <Stack gap={5}>
-                <label htmlFor="message-input">
-                  <Heading
-                    textAlign="left"
-                    fontFamily="Open Sans"
-                    className={styles.label}
-                  >
-                    What's your message?
-                  </Heading>
-                </label>
-
-                <Textarea
-                  rows={5}
-                  name="Message"
-                  borderRadius="0"
-                  autoComplete="off"
-                  className={styles.input + " " + styles.textArea}
-                  id="message-input"
-                  background="#e8e8e8"
-                  height="auto"
-                  color="rgba(0,0,0,.52)"
-                  _focus={{ borderColor: "#c2c2c2" }}
-                  value={message}
-                  onChange={(e) => {
-                    setMessage(e.target.value);
-                  }}
-                ></Textarea>
-                <ErrorBanner />
-                <ReCAPTCHA
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                  onChange={verifyCaptcha}
-                  onExpired={expireCaptcha}
-                />
-                {sendingMessage && (
-                  <Progress.Root value={null} size="xs">
-                    {/* @ts-expect-error Chakra v3 Progress compound component types */}
-                    <Progress.Track>
-                      <Progress.Range />
-                    </Progress.Track>
-                  </Progress.Root>
-                )}
-              </Stack>
-            </motion.div>
-          )}
-
-          {stepIndex === 3 && (
-            <motion.div
-              initial={{ opacity: 0, y: "5vh" }}
-              animate={{ opacity: 1, y: "0vh" }}
-              exit={{ opacity: 0, display: "none" }}
-              transition={{
-                duration: 1,
-                ease: "easeInOut",
-              }}
-            >
-              <Heading
-                size="4xl"
-                textAlign="left"
-                fontFamily="Open Sans"
+            {stepIndex === 2 && (
+              <motion.div
+                key="step-2"
+                initial={{ opacity: 0, y: "5vh" }}
+                animate={{ opacity: 1, y: "0vh" }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeInOut",
+                }}
               >
-                Thanks, I will be in touch!
-              </Heading>
-            </motion.div>
-          )}
+                <Stack gap={8}>
+                  <label htmlFor="message-input">
+                    <Heading
+                      textAlign="left"
+                      fontFamily="Open Sans"
+                      className={styles.label}
+                    >
+                      What's your message?
+                    </Heading>
+                  </label>
+
+                  <Textarea
+                    rows={5}
+                    name="Message"
+                    borderRadius="0"
+                    autoComplete="off"
+                    className={styles.input + " " + styles.textArea}
+                    id="message-input"
+                    background="#e8e8e8"
+                    height="auto"
+                    color="rgba(0,0,0,.52)"
+                    _focus={{ borderColor: "#c2c2c2" }}
+                    value={message}
+                    onChange={(e) => {
+                      setTouched(true);
+                      setMessage(e.target.value);
+                    }}
+                  ></Textarea>
+                  <ErrorBanner />
+                  <ReCAPTCHA
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                    onChange={verifyCaptcha}
+                    onExpired={expireCaptcha}
+                  />
+                  {sendingMessage && (
+                    <Progress.Root value={null} size="xs">
+                      {/* @ts-expect-error Chakra v3 Progress compound component types */}
+                      <Progress.Track>
+                        <Progress.Range />
+                      </Progress.Track>
+                    </Progress.Root>
+                  )}
+                </Stack>
+              </motion.div>
+            )}
+
+            {stepIndex === 3 && (
+              <motion.div
+                key="step-3"
+                initial={{ opacity: 0, y: "5vh" }}
+                animate={{ opacity: 1, y: "0vh" }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeInOut",
+                }}
+              >
+                <Heading
+                  size="4xl"
+                  textAlign="left"
+                  fontFamily="Open Sans"
+                >
+                  Thanks, I will be in touch!
+                </Heading>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
+        {stepIndex < 3 && (
+          <div
+            style={{
+              fontFamily: "'Open Sans'",
+              fontSize: "0.75rem",
+              color: "#999",
+              letterSpacing: "0.2em",
+              textAlign: "center",
+              marginBottom: "1rem",
+            }}
+          >
+            {stepIndex + 1} / 3
+          </div>
+        )}
         <HStack w="100%" justify="center" gap={5}>
           <Button
             onClick={onBackClick}
             size="lg"
             css={{
               background: "#fff",
+              color: "#000",
               border: "2px solid #000",
               fontWeight: "400",
               borderRadius: "0",
@@ -331,6 +356,12 @@ export default function ContactForm({ closeForm }) {
                 borderRadius: "0",
                 cursor: "pointer",
                 "&:hover": { background: "#222" },
+                "&:disabled": {
+                  background: "#999",
+                  color: "#666",
+                  cursor: "not-allowed",
+                  opacity: 0.6,
+                },
               }}
             >
               {stepIndex === 2 ? "SEND" : "NEXT"}
