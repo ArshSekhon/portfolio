@@ -55,17 +55,38 @@ export default function AboutPage({ aboutMeMarkdown }) {
   const [width, height] = useWindowSize();
 
   const markdownTheme = {
-    a: (props) => {
-      const { children } = props;
-      return (
-        <a
-          href={props.href}
-          style={{ color: "#0755a5", textDecoration: "underline" }}
-        >
-          {children}
-        </a>
-      );
-    },
+    a: (props) => (
+      <a href={props.href} style={{ color: "#0755a5", textDecoration: "underline" }}>
+        {props.children}
+      </a>
+    ),
+    p: (props) => (
+      <p style={{ marginBottom: "1em", lineHeight: 1.7, fontSize: "1rem" }}>{props.children}</p>
+    ),
+    h1: (props) => (
+      <h1 style={{ fontSize: "2.2rem", fontWeight: 700, marginTop: "1.5em", marginBottom: "0.5em", color: "#1a1a2e" }}>{props.children}</h1>
+    ),
+    h2: (props) => (
+      <h2 style={{ fontSize: "1.8rem", fontWeight: 700, marginTop: "2em", marginBottom: "0.6em", color: "#1a1a2e" }}>{props.children}</h2>
+    ),
+    h3: (props) => (
+      <h3 style={{ fontSize: "1.4rem", fontWeight: 600, marginTop: "1.5em", marginBottom: "0.5em", color: "#1a1a2e" }}>{props.children}</h3>
+    ),
+    ul: (props) => (
+      <ul style={{ paddingLeft: "1.5em", marginBottom: "1em", listStyleType: "disc" }}>{props.children}</ul>
+    ),
+    ol: (props) => (
+      <ol style={{ paddingLeft: "1.5em", marginBottom: "1em", listStyleType: "decimal" }}>{props.children}</ol>
+    ),
+    li: (props) => (
+      <li style={{ marginBottom: "0.4em", lineHeight: 1.7 }}>{props.children}</li>
+    ),
+    hr: () => (
+      <hr style={{ border: "none", borderTop: "1px solid #ddd", margin: "2em 0" }} />
+    ),
+    strong: (props) => (
+      <strong style={{ fontWeight: 700 }}>{props.children}</strong>
+    ),
   };
 
   return (
@@ -99,13 +120,9 @@ export default function AboutPage({ aboutMeMarkdown }) {
         transition={{ delay: appCtx.data.introViewed ? 1.3 : 0, duration: 1 }}
       >
         <Container
-          maxW={{
-            base: "container.sm",
-            sm: "container.sm",
-            xl: "container.lg",
-          }}
-          margin="5vh 0 10vh"
-          paddingX="10%"
+          maxW="680px"
+          margin="5vh auto 10vh"
+          paddingX={{ base: "5%", md: "0" }}
         >
           <Stack gap={3} alignItems="flex-start">
             <div className={styles.helloAbout}>Hello,</div>
