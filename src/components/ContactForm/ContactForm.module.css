@@ -1,11 +1,13 @@
 .label,
 .label * {
   font-size: 5rem !important;
+  margin-bottom: 0.4em !important;
 }
 
 .input {
   font-size: 2rem !important;
   padding: 2% 2.5%;
+  margin-top: 0.5em;
 }
 
 .textArea {

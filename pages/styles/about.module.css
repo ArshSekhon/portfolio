@@ -1,5 +1,107 @@
 .helloAbout {
-  font-size: 15vw;
+  font-size: clamp(3rem, 15vw, 10rem);
   font-weight: bold;
   color: black;
+  line-height: 1;
+  margin-bottom: 0.3em;
+}
+
+/* Full-page layout — takes over the viewport on desktop */
+.page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nav title floats above the slides */
+.navTitle {
+  position: relative;
+  z-index: 10;
+  padding-top: 2vh;
+  text-align: center;
+}
+
+/* Snap scroll container — fills remaining space */
+.snapContainer {
+  flex: 1;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Each slide = full viewport, snaps into place */
+.slide {
+  min-height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 7vw;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.slideContent {
+  max-width: 640px;
+  width: 100%;
+}
+
+.lastSlide {
+  text-align: center;
+}
+
+.lastSlide ul {
+  display: inline-block;
+  text-align: left;
+}
+
+/* Slide indicator — fixed right side */
+.indicator {
+  position: fixed;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 20;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  transition: all 0.3s ease;
+}
+
+.dotActive {
+  background: #000;
+  height: 24px;
+}
+
+/* Mobile: regular scroll, no snap, no fixed layout — MUST be last */
+@media (max-width: 768px) {
+  .page {
+    position: static;
+  }
+
+  .snapContainer {
+    overflow-y: visible;
+    scroll-snap-type: none;
+    height: auto;
+    flex: none;
+  }
+
+  .slide {
+    min-height: auto;
+    scroll-snap-align: unset;
+    scroll-snap-stop: unset;
+    padding: 8vh 7vw;
+  }
+
+  .indicator {
+    display: none;
+  }
 }
