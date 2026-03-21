@@ -12,6 +12,7 @@ const AppContext = React.createContext({
   /** When true, destination pages play reverse exit animations before navigation */
   isExiting: false,
   triggerExit: (_onComplete: () => void) => {},
+  completeExit: () => {},
 });
 
 function AppContextProvider(props) {
