@@ -12,7 +12,6 @@ import styles from "./ContactForm.module.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import ReCAPTCHA from "react-google-recaptcha";
-import { toaster } from "../../providers/toaster";
 
 function validateEmail(email) {
   const re =
@@ -34,6 +33,7 @@ export default function ContactForm({ closeForm }) {
   const [errorStep, setErrorStep] = React.useState(0);
   const [captchaHumanKey, setCaptchaHumanKey] = React.useState();
   const [touched, setTouched] = React.useState(false);
+  const [sendError, setSendError] = React.useState("");
 
   const sendMessage = async () => {
     const payload = { name, email, message, captchaHumanKey };
@@ -52,18 +52,11 @@ export default function ContactForm({ closeForm }) {
     setSendingMessage(false);
 
     if (response.status !== 200) {
-      const errorText =
-        "Failed to send message. Please consider contacting directly by sending an email to arshsekhon1998@gmail.com.";
-      toaster.error({
-        title: errorText,
-      });
-      console.error(errorText);
+      setSendError("Failed to send message. Please consider contacting directly by sending an email to arshsekhon1998@gmail.com.");
+      return;
     }
-    toaster.success({
-      title: "Message sent successfully!",
-    });
 
-    return;
+    setStepIndex(3);
   };
   const verifyCaptcha = (key) => {
     setCaptchaHumanKey(key);
@@ -136,7 +129,10 @@ export default function ContactForm({ closeForm }) {
   const onNextClick = async () => {
     setTouched(true);
     if (errorStep === stepIndex) return;
-    if (stepIndex == 2) await sendMessage();
+    if (stepIndex == 2) {
+      await sendMessage();
+      return; // sendMessage handles step advancement
+    }
     setTouched(false);
     setStepIndex((i) => i + 1);
   };
@@ -277,6 +273,11 @@ export default function ContactForm({ closeForm }) {
                     onChange={verifyCaptcha}
                     onExpired={expireCaptcha}
                   />
+                  {sendError && (
+                    <div style={{ color: "maroon", textAlign: "left", marginTop: "0.5em" }}>
+                      {sendError}
+                    </div>
+                  )}
                   {sendingMessage && (
                     <Progress.Root value={null} size="xs">
                       {/* @ts-expect-error Chakra v3 Progress compound component types */}

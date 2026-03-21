@@ -1,6 +1,5 @@
 import { AppProps } from "next/app";
-import { ChakraProvider, defaultSystem, Toaster } from "@chakra-ui/react";
-import { toaster } from "../src/providers/toaster";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { AppContextProvider } from "../src/providers/AppContext";
 import MainLayout from "../src/components/layouts/Main.Layout";
 import Head from "next/head";
@@ -45,8 +44,6 @@ function App({ Component, pageProps }: AppProps) {
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
-        {/* @ts-expect-error Chakra v3 Toaster type mismatch */}
-        <Toaster toaster={toaster} />
       </ChakraProvider>
     </AppContextProvider>
   );
