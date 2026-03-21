@@ -1,0 +1,163 @@
+/* Vertical "Work" text */
+.verticalText {
+  position: fixed;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Main content area */
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem 12vh 5rem;
+  box-sizing: border-box;
+}
+
+.indexContainer {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header row */
+.indexHeader {
+  display: flex;
+  border-bottom: 4px solid #000;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-family: "Inter", "Open Sans", sans-serif;
+}
+
+.colNumber {
+  width: 4rem;
+  flex-shrink: 0;
+}
+
+.colDiscipline {
+  flex: 1;
+}
+
+.colAction {
+  width: 10rem;
+  text-align: right;
+}
+
+/* Each row */
+.indexRow {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 2rem 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: #000;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.indexRow:hover {
+  background-color: #000;
+  color: #fff;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.rowNumber {
+  width: 4rem;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  font-weight: 300;
+  font-family: "Inter", "Open Sans", sans-serif;
+}
+
+.rowContent {
+  flex: 1;
+}
+
+.rowTitle {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-family: "Inter", "Open Sans", sans-serif;
+}
+
+.rowSubtitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 0.5rem;
+  opacity: 0.5;
+  font-family: "Inter", "Open Sans", sans-serif;
+}
+
+.rowArrow {
+  width: 10rem;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.indexRow:hover .rowArrow {
+  opacity: 1;
+}
+
+/* Tablet — tighten spacing before mobile kicks in */
+@media (max-width: 1100px) {
+  .verticalText {
+    left: 0.5rem;
+  }
+
+  .pageContainer {
+    padding-left: 4rem;
+  }
+
+  .rowTitle {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  .colAction,
+  .rowArrow {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .verticalText {
+    left: -5rem;
+    opacity: 0;
+    transition: none;
+  }
+
+  .pageContainer {
+    padding: 0 1.5rem 15vh 1.5rem;
+  }
+
+  .colAction,
+  .rowArrow {
+    display: none;
+  }
+
+  .colNumber,
+  .rowNumber {
+    width: 2.5rem;
+  }
+
+  .indexRow {
+    padding: 1.5rem 0;
+  }
+}

@@ -74,6 +74,11 @@ const DesktopNav = ({ onNavigate }) => {
       y: "100%",
       transition: { duration: 0.4, ease: "easeOut" },
     });
+
+    workContainerAnimationControl.start({
+      opacity: 0,
+      transition: { duration: 0.3, ease: "easeOut" },
+    });
   };
 
   const workFontSize =
@@ -219,6 +224,11 @@ const MobileNav = ({ onNavigate }) => {
       y: "100%",
       opacity: 0,
       transition: { duration: 0.4, ease: "easeOut" },
+    });
+
+    workContainerAnimationControl.start({
+      opacity: 0,
+      transition: { duration: 0.3, ease: "easeOut" },
     });
   };
 

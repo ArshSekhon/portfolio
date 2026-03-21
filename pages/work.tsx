@@ -1,85 +1,88 @@
-import React from "react";
+import React, { useRef } from "react";
 import { motion, animate as fmAnimate } from "framer-motion";
-import styles from "./styles/work.module.css";
-import Navlink from "../src/components/navigation/Navlink/Navlink";
 import { useAppContext } from "../src/providers/AppContext";
 import { Router } from "next/router";
 import Head from "next/head";
+import styles from "./styles/work.module.css";
+import Navlink from "../src/components/navigation/Navlink/Navlink";
+import { useBreakpointValue } from "@chakra-ui/react";
 
-import {
-  Container,
-  Heading,
-  GridItem,
-  Stack,
-  Grid,
-  Button,
-  SimpleGrid,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+const DISCIPLINES = [
+  {
+    number: "01",
+    title: "The Weblog",
+    subtitle: "CS, Keyboards, Science, & Essays",
+    href: "https://blog.arshsekhon.com",
+  },
+  {
+    number: "02",
+    title: "Code",
+    subtitle: "Open Source Projects & Code",
+    href: "https://github.com/arshsekhon",
+  },
+  {
+    number: "03",
+    title: "Design & Visuals",
+    subtitle: "UI/UX, Branding, & Behance",
+    href: "https://www.behance.net/arshsekhonea7f",
+  },
+];
 
-/**
- * Work page — uses a CSS transition approach for the morph, unlike About/Contact
- * which use useMorphTransition for a vertical FLIP animation.
- *
- * WHY DIFFERENT:
- * The Work link on the Home page is rotated -90deg and positioned on the right edge.
- * A vertical morph doesn't make sense here — instead, the title slides horizontally
- * from its Home position (right:10vh) to its final position (right:95vw) using a
- * CSS `transition` on the `right` property.
- *
- * MORPH FLOW:
- * 1. hasNavTransition captures whether navTransitionRect existed at mount time
- * 2. If true: rightPos starts at "10vh" (matching Home position), titleExpanded=true
- * 3. Double requestAnimationFrame trick ensures the browser paints the start position
- *    before we set rightPos to "95vw", triggering the CSS transition
- * 4. After 650ms: titleExpanded=false collapses characters, navTransitionRect cleared
- *
- * DOUBLE-rAF TRICK:
- * A single rAF can batch with React's commit phase. Two nested rAFs guarantee the
- * browser has painted at least one frame with the initial position, so the CSS
- * transition actually animates instead of snapping.
- */
+const ArrowIcon = () => (
+  <svg
+    width="40"
+    height="40"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="square"
+  >
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+);
+
 export default function Work() {
   const appCtx = useAppContext();
   const [Open, setOpen] = React.useState(true);
-  // Capture once at mount — don't react to later changes
   const [hasNavTransition] = React.useState(!!appCtx.navTransitionRect);
   const [titleExpanded, setTitleExpanded] = React.useState(hasNavTransition);
-  const workTitleRef = React.useRef<HTMLDivElement>(null);
+  const workTitleRef = useRef<HTMLDivElement>(null);
 
-  // GPU-accelerated morph: render at final position, then use translateX to
-  // offset to source position and animate back to 0
+  // GPU-accelerated morph: slide from Home position to final position
   React.useLayoutEffect(() => {
     if (!hasNavTransition || !workTitleRef.current) return;
 
     const el = workTitleRef.current;
-    const targetRect = el.getBoundingClientRect();
     const sourceRect = appCtx.navTransitionRect;
     if (!sourceRect) return;
 
-    // Use center points instead of left edges — immune to width differences
-    // caused by character expansion animation and rotated bounding box distortion
+    // Skip morph on mobile — sidebar is hidden via CSS
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      setTitleExpanded(false);
+      appCtx.setNavTransitionRect(null);
+      return;
+    }
+
+    const targetRect = el.getBoundingClientRect();
     const sourceCenterX = sourceRect.left + sourceRect.width / 2;
     const targetCenterX = targetRect.left + targetRect.width / 2;
     const deltaX = sourceCenterX - targetCenterX;
 
-    // Start at source position, hidden until positioned
     el.style.visibility = "hidden";
-    el.style.transform = `translateX(calc(50% + ${deltaX}px)) translateY(-50%)`;
-
-    // Force reflow so browser registers the start position
+    el.style.transform = `translateY(-50%) translateX(${deltaX}px)`;
     el.getBoundingClientRect();
-
-    // Reveal and animate back to natural position
     el.style.visibility = "visible";
+
     const controls = fmAnimate(deltaX, 0, {
       duration: 0.6,
       ease: [0.4, 0, 0.2, 1],
       onUpdate: (v) => {
-        el.style.transform = `translateX(calc(50% + ${v}px)) translateY(-50%)`;
+        el.style.transform = `translateY(-50%) translateX(${v}px)`;
       },
       onComplete: () => {
-        el.style.transform = "translateX(50%) translateY(-50%)";
+        el.style.transform = "translateY(-50%)";
         setTitleExpanded(false);
         appCtx.setNavTransitionRect(null);
       },
@@ -87,11 +90,21 @@ export default function Work() {
 
     return () => {
       controls.stop();
-      el.style.transform = "translateX(50%) translateY(-50%)";
+      el.style.transform = "translateY(-50%)";
     };
   }, []);
 
-  // Hide title when navigating away (non-back-button navigation)
+  React.useEffect(() => {
+    if (hasNavTransition && !workTitleRef.current) {
+      // Fallback if ref not available
+      const t = setTimeout(() => {
+        setTitleExpanded(false);
+        appCtx.setNavTransitionRect(null);
+      }, 650);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
   React.useEffect(() => {
     const routeChangeCallback = () => setOpen(false);
     Router.events.on("beforeHistoryChange", routeChangeCallback);
@@ -100,7 +113,6 @@ export default function Work() {
     };
   }, []);
 
-  // Reverse exit animation when back button is clicked
   React.useEffect(() => {
     if (appCtx.isExiting) {
       setTitleExpanded(true);
@@ -117,16 +129,10 @@ export default function Work() {
       <Head>
         <title>Work - Arsh Sekhon</title>
       </Head>
+
+      {/* Left vertical "Work" text with strikethrough */}
       {Open && (
-        <div
-          ref={workTitleRef}
-          style={{
-            position: "fixed",
-            top: "50vh",
-            right: "95vw",
-            transform: "translateX(50%) translateY(-50%)",
-          }}
-        >
+        <div ref={workTitleRef} className={styles.verticalText}>
           <motion.div
             animate={appCtx.isExiting ? { opacity: 0 } : { opacity: 1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -139,109 +145,55 @@ export default function Work() {
               style={{
                 transform: "rotate(-90deg)",
                 position: "relative",
-                right: "0%",
-                top: "50%",
               }}
               isExpanded={titleExpanded}
             />
           </motion.div>
         </div>
       )}
+
+      {/* Main content */}
       <motion.div
         initial={{ y: "10%", opacity: 0 }}
-        animate={appCtx.isExiting ? { y: "10%", opacity: 0 } : { y: 0, opacity: 1 }}
+        animate={
+          appCtx.isExiting
+            ? { y: "10%", opacity: 0 }
+            : { y: 0, opacity: 1 }
+        }
         transition={{
           delay: !appCtx.isExiting && appCtx.data.introViewed ? 1.3 : 0,
           duration: appCtx.isExiting ? 0.4 : 1,
         }}
+        className={styles.pageContainer}
       >
-        <Container
-          maxW="60vw"
-          margin={{ base: "auto 0 auto 10vw", md: "auto 0 auto 5vw" }}
-          width="70vw"
-        >
-          <Grid
-            gap={2}
-            rowGap={20}
-            columnGap={10}
-            justifyContent="space-evenly"
-            alignContent="center"
-            alignItems="center"
-            templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-          >
-            <GridItem>
-              <Stack textAlign="center" gap={5}>
-                <Heading fontSize={{ base: "2rem", md: "2.5rem" }}>
-                  ME AS A DEVELOPER.
-                </Heading>
-                <div style={{ height: "200px", verticalAlign: "middle" }}>
-                  <img
-                    style={{ margin: "auto", height: "100%" }}
-                    className="category D"
-                    src="assets/socials/github.svg"
-                  />
-                </div>
-                <div>
-                  <a href="https://github.com/arshsekhon" target="_blank">
-                    <Button
-                      css={{
-                        transition: "all 0.2s cubic-bezier(.08,.52,.52,1)",
-                        border: "2px solid #000",
-                        fontSize: "1rem",
-                        borderRadius: "2px",
-                        width: "100%",
-                        maxWidth: "15em",
-                        background: "#000",
-                        color: "#fff",
-                        cursor: "pointer",
-                        "&:hover": { background: "#fff", color: "#000" },
-                      }}
-                    >
-                      Explore Projects
-                    </Button>
-                  </a>
-                </div>
-              </Stack>
-            </GridItem>
-            <GridItem>
-              <Stack textAlign="center" gap={5} alignContent="center">
-                <Heading fontSize={{ base: "2rem", md: "2.5rem" }}>
-                  ME AS A DESIGNER.
-                </Heading>
-                <div style={{ height: "200px", verticalAlign: "middle" }}>
-                  <img
-                    style={{ margin: "auto", height: "100%" }}
-                    className="category D"
-                    src="assets/socials/Be.svg"
-                  />
-                </div>
-                <div>
-                  <a
-                    href="https://www.behance.net/arshsekhonea7f"
-                    target="_blank"
-                  >
-                    <Button
-                      css={{
-                        transition: "all 0.2s cubic-bezier(.08,.52,.52,1)",
-                        border: "2px solid #000",
-                        fontSize: "1rem",
-                        borderRadius: "2px",
-                        width: "100%",
-                        maxWidth: "15em",
-                        background: "#000",
-                        color: "#fff",
-                        cursor: "pointer",
-                        "&:hover": { background: "#fff", color: "#000" },
-                      }}
-                    >
-                      Explore Designs
-                    </Button>
-                  </a>
-                </div>
-              </Stack>
-            </GridItem>
-          </Grid>
-        </Container>
+        <div className={styles.indexContainer}>
+          {/* Index Header */}
+          <div className={styles.indexHeader}>
+            <div className={styles.colNumber}>No.</div>
+            <div className={styles.colDiscipline}>Discipline</div>
+            <div className={styles.colAction}>Action</div>
+          </div>
+
+          {/* Rows */}
+          {DISCIPLINES.map((d, i) => (
+            <a
+              key={i}
+              href={d.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.indexRow}
+            >
+              <div className={styles.rowNumber}>{d.number}</div>
+              <div className={styles.rowContent}>
+                <h2 className={styles.rowTitle}>{d.title}</h2>
+                <p className={styles.rowSubtitle}>{d.subtitle}</p>
+              </div>
+              <div className={styles.rowArrow}>
+                <ArrowIcon />
+              </div>
+            </a>
+          ))}
+        </div>
       </motion.div>
     </>
   );
