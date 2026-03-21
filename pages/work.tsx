@@ -12,7 +12,7 @@ const DISCIPLINES = [
     number: "01",
     title: "The Weblog",
     subtitle: "CS, Keyboards, Science, & Essays",
-    href: "https://blog.arshsekhon.com",
+    href: "https://arshsekhon.substack.com/",
   },
   {
     number: "02",
